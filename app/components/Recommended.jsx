@@ -6,17 +6,16 @@ import CommonButton from './common/CommonButton'
 
 const Recommended = () => {
   return (
-    <div className='mt-15'>
-        <CommonHead commonHeadText={"Recommended"} CommonHeadTextSmall={"by Swatbabymall"} />
-        <div className='max-w-7xl mx-auto'>
+        <div className='max-w-7xl mx-auto mt-15 text-center'>
+        <CommonHead commonHeadText={"Recommended"} CommonHeadTextSmall={"by E-Commerce"} />
             <div className='py-10 flex items-center justify-center gap-4'>
-                <CommonButton/>
-                <CommonButton/>
-                <CommonButton/>
-                <CommonButton/>
-                <CommonButton/>
-                <CommonButton/>
-                <CommonButton/>
+                <CommonButton buttontext={"Best Seller"}/>
+                <CommonButton buttontext={"Top Rated"}/>
+                <CommonButton buttontext={"New"}/>
+                <CommonButton buttontext={"New"}/>
+                <CommonButton buttontext={"New"}/>
+                <CommonButton buttontext={"New"}/>
+                <CommonButton buttontext={"New"}/>
             </div>
             <div className='w-full flex items-center justify-between'>
                 <SingleCart/>
@@ -26,7 +25,6 @@ const Recommended = () => {
                 <SingleCart/>
             </div>
         </div>
-    </div>
   )
 }
 

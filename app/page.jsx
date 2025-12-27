@@ -3,6 +3,9 @@ import React from 'react'
 import Banner from './components/Banner'
 import PopularCategories from './components/PopularCategories'
 import Recommended from './components/Recommended'
+import NewArrival from './components/NewArrival'
+import ClearanceSale from './components/ClearanceSale'
+import OurService from './components/OurService'
 
 const page = () => {
     
@@ -12,6 +15,9 @@ const page = () => {
       <Banner/>
       <PopularCategories/>
       <Recommended/>
+      <ClearanceSale/>
+      <NewArrival/>
+      <OurService/>
     </div>
     </>
   )
