@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-arp="">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        cz-shortcut-listen="true"
         >
         <Navbar/>
         {children}
