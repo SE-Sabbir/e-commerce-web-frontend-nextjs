@@ -6,6 +6,7 @@ import Recommended from './components/Recommended'
 import NewArrival from './components/NewArrival'
 import ClearanceSale from './components/ClearanceSale'
 import OurService from './components/OurService'
+import Footer from './components/Footer'
 
 const page = () => {
     
@@ -18,6 +19,7 @@ const page = () => {
       <ClearanceSale/>
       <NewArrival/>
       <OurService/>
+      <Footer/>
     </div>
     </>
   )
