@@ -2,6 +2,7 @@ import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { IoCart } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
+import Link from 'next/link';
 
 
 
@@ -9,10 +10,10 @@ const Navbar = () => {
   return (
     <nav className='w-full bg-[#01A49E]'>
         <div className='max-w-7xl mx-auto h-20 flex items-center justify-between '>
-            <div className='flex items-center justify-center gap-2'>
+            <Link href='/' className='flex items-center justify-center gap-2'>
                 <img className='w-10 h-10 rounded-full overflow-hidden' src={'favicon.ico'} alt="logo" />
                 <h4 className='font-poppins font-bold text-white'>MERN-ECOMMERCE</h4>
-            </div>
+            </Link>
             <div className='flex items-center justify-center'>
                 <div className='w-70 h-11 px-5 flex items-center bg-white rounded-l-3xl '>
                     <input className='w-full outline-none' type="text" placeholder='Search anything' />
@@ -35,7 +36,7 @@ const Navbar = () => {
                 </div>
                 <div>
                 <p className='text-[11px] text-white'>WELCOME</p>
-                <button className=' font-poppins text-[14px] font-bold text-white ' >LOG IN / REGISTER</button>
+                <Link href='/login' className=' font-poppins text-[14px] font-bold text-white ' >LOG IN / REGISTER</Link>
                 </div>
             </div>
             <div className='flex items-center justify-center gap-4'>
