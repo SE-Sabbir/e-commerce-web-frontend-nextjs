@@ -2,6 +2,8 @@ import React from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { IoCart } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { GiRotaryPhone } from "react-icons/gi";
 import Link from 'next/link';
 
 
@@ -50,6 +52,16 @@ const Navbar = () => {
                 <p className='text-[11px] text-white'>CART</p>
                 <button className='font-poppins text-[14px] font-bold text-white ' >$1689.00</button>
                 </div>
+            </div>
+        </div>
+        <div className='w-full h-12 bg-[#039691] '>
+            <div className=' max-w-7xl mx-auto h-full flex items-center justify-between font-semibold text-white  '>
+                <div className='flex items-center gap-10 '>
+                <h3 className='flex items-center gap-1'>Home <MdOutlineKeyboardArrowDown className='text-xl'/></h3>
+                <h3 className='flex items-center gap-1'>Product <MdOutlineKeyboardArrowDown className='text-xl'/></h3>
+                <h3 className='flex items-center gap-1'>Contact <MdOutlineKeyboardArrowDown className='text-xl'/></h3>
+                </div>
+                <p className='px-3 py-1 font-poppins font-normal border rounded-3xl flex items-center justify-center gap-2'><GiRotaryPhone className='text-2xl'/>Hotline 24/7 <span className='font-semibold'>01312389439</span></p>
             </div>
         </div>
     </nav>
