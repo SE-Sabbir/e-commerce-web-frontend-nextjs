@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { HiShoppingCart } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa6";
 import { GoZap } from "react-icons/go";
+import { FaMinus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
+
 
 
 const page = () => {
@@ -91,7 +94,7 @@ const page = () => {
 
           {/* Pricing Section */}
           <div className="flex items-baseline gap-4">
-            <span className="text-3xl font-bold text-indigo-600">৳{product.discountPrice}</span>
+            <span className="text-3xl font-bold text-[#01A49E]">৳{product.discountPrice}</span>
             <span className="text-xl text-gray-400 line-through">৳{product.price}</span>
           </div>
 
@@ -110,7 +113,7 @@ const page = () => {
                   onClick={() => setSelectedSize(vname.varientName)}
                   className={`min-w-12 px-4 py-2 rounded-md border-2 font-medium transition-all
                     ${selectedSize === vname.varientName
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-600' 
+                      ? 'border-[#01A49E] text-[#01A49E]' 
                       : 'border-gray-200 hover:border-gray-400 text-gray-700'}`}
                 >
                   {vname.varientName}
@@ -128,14 +131,14 @@ const page = () => {
           {/* 2. Quantity Selector Section */}
         <div className="space-y-4">
             <label className="font-bold text-gray-800">Quantity</label>
-            <div className="flex items-center gap-4">
+            <div className="mt-1 flex items-center gap-4">
             <div className="flex items-center border-2 border-gray-200 rounded-lg overflow-hidden w-fit">
                 <button 
                 onClick={handleDecrement}
                 disabled={quantity <= 1}
                 className="p-3 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 >
-                <Minus size={18} />
+                <FaMinus size={18} />
                 </button>
                 
                 <div className="w-12 text-center font-bold text-lg select-none">
@@ -147,7 +150,7 @@ const page = () => {
                 disabled={quantity >= product.stock}
                 className="p-3 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 >
-                <Plus size={18} />
+                <FaPlus size={18} />
                 </button>
             </div>
             
