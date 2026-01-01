@@ -6,10 +6,13 @@ import { FaRegHeart } from "react-icons/fa6";
 import { GoZap } from "react-icons/go";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
+import { useParams } from 'next/navigation';
+import ProductDetailsSkeleton from '@/app/components/skeliton/ProductDetailsSkeleton';
 
 
 
 const page = () => {
+    const {slug} = useParams()
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeImg, setActiveImg] = useState("");
@@ -32,7 +35,7 @@ const page = () => {
     useEffect(() => {
         const fetchProduct = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/product/single-product/mens-premium-panjabi-aarish`);
+            const response = await axios.get(`http://localhost:8000/product/single-product/${slug}`);
             const data = response.data;
             setProduct(data);
             // Start with the thumbnail as the main image
@@ -46,15 +49,11 @@ const page = () => {
         fetchProduct();
     }, []);
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-    if (!product) return <div className="min-h-screen flex items-center justify-center">Product not found.</div>;
-
-    // Calculate discount percentage
-    const discountPercentage = Math.round(((product.price - product.discountPrice) / product.price) * 100);
-    console.log(product)
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12 bg-white">
+        {loading?
+        <ProductDetailsSkeleton/>
+        :
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* --- LEFT: Image Gallery (7 Columns) --- */}
@@ -65,7 +64,7 @@ const page = () => {
             {[product.thumbnail, ...product.subImages].map((img, index) => (
               <div
                 key={index}
-                onMouseEnter={() => setActiveImg(img)}
+                onClick={() => setActiveImg(img)}
                 className={`cursor-pointer rounded-md overflow-hidden border-2 transition-all aspect-3/4 flex shrink-0 w-20 md:w-full
                   ${activeImg === img ? 'border-indigo-600' : 'border-transparent hover:border-gray-200'}`}
               >
@@ -76,11 +75,6 @@ const page = () => {
 
           {/* Large Display Image */}
           <div className="order-1 md:order-2 flex-1 rounded-xl overflow-hidden bg-gray-50 border relative">
-             {discountPercentage > 0 && (
-                <span className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
-                  -{discountPercentage}% OFF
-                </span>
-             )}
             <img src={activeImg} alt={product.title} className="w-full aspect-square object-cover object-top" />
           </div>
         </div>
@@ -188,6 +182,7 @@ const page = () => {
           </div>
         </div>
       </div>
+        }
     </div>
   )
 }
