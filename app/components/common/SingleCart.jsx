@@ -19,7 +19,7 @@ const SingleCart = ({id ,slug ,pTitle , pImages=[] , pThumbnail ,pDisPrice , pPr
 
           <Rate size="small" disabled defaultValue={4} />
 
-          <div className="w-full h-56">
+          <div className="w-full h-56 py-2">
             <Carousel autoplaySpeed={4000} autoplay>
               {/* Thumbnail */}
               {pThumbnail && (

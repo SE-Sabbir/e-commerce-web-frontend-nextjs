@@ -1,57 +1,72 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { Carousel } from 'antd';
+import BannerSkeleton from './skeliton/BannerSkeleton';
+import axios from 'axios';
+import Link from 'next/link';
 
 const Banner = () => {
+  const [product , setProduct] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [limit , setLimit] = useState(2)
+
+  const fetchProduct =async()=>{
+      try{
+      const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
+          filterProduct: "all",
+          limit,
+        }})
+      setProduct(response.data);
+    }
+    catch(err){
+      console.log(err)
+    }finally{
+      setLoading(false)
+    }
+  }  
+  // Re-fetch when filters change (Debouncing search is recommended for production)
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchProduct();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, []);
 
   return (
-    <div className='max-w-7xl mx-auto bg-[#F0E7D9]'>
-    <Carousel autoplay>
-    <div>
-      <div className='w-full h-115 flex items-center justify-around'>
-        <div className='relative'>
-        <h3 className='font-bold text-lg'>Bobolax</h3>
-        <h4 className='w-72 mt-3 font-normal text-4xl'><span className='font-bold'>Nutri 7-In-1</span> Base On Formula 400g</h4>
-        <p className='w-35 mt-6 font-normal text-base'>Lorem ispum dolor sitamet photo</p>
-        <button className='w-35 h-12 mt-6 font-semibold text-tansform uppercase text-white text-sm rounded-xl bg-[#01A49E] cursor-pointer hover:scale-105'>Shop Now</button>
+    <div className='max-w-7xl mx-auto bg-gray-100'>
+      {loading?
+      <BannerSkeleton/>
+      :
+      <Carousel autoplay>
+      {product.map((item)=>(
+        <div key={item._id}>
+          <div className='w-full h-125 flex items-center justify-around'>
+            <div className='relative'>
+            <h3 className='font-bold text-lg'>Featured</h3>
+            <h4 className='w-72 mt-3 font-semibold text-4xl'>{item.title}</h4>
+            <p className='w-35 mt-6 font-normal text-base'>Premium quality product with best comfort & style.</p>
+            <Link href={`/products/${item.slug}`}>
+            <button className='w-35 h-12 mt-6 font-semibold text-tansform uppercase text-white text-sm rounded-xl bg-[#01A49E] cursor-pointer hover:scale-105'>Shop Now</button>
+            </Link>
+            </div>
+              {/* IMAGE */}
+            <div className="relative w-130 h-95">
+              <Image
+                src={item.thumbnail}
+                alt="Banner"
+                fill
+                priority
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, 516px"
+                className="object-contain"
+              />
+            </div>
+          </div>
         </div>
-          {/* IMAGE */}
-        <div className="relative w-129 h-95">
-          <Image
-            src="/product1.png"
-            alt="Banner"
-            fill
-            priority
-            loading="eager"
-            sizes="(max-width: 768px) 100vw, 516px"
-            className="object-contain"
-          />
-        </div>
-      </div>
-    </div>
-    <div>
-      <div className='w-full h-115 flex items-center justify-around'>
-        <div className=''>
-        <h3 className='font-bold text-lg'>Bobolax</h3>
-        <h4 className='w-72 mt-3 font-normal text-4xl'><span className='font-bold'>Nutri 7-In-1</span> Base On Formula 400g</h4>
-        <p className='w-35 mt-6 font-normal text-base'>Lorem ispum dolor sitamet photo</p>
-        <button className='w-35 h-12 mt-6 font-semibold text-tansform uppercase text-white text-sm rounded-xl bg-[#01A49E]'>Shop Now</button>
-        </div>
-          {/* IMAGE */}
-        <div className="relative w-129 h-95">
-          <Image
-            src="/product1.png"
-            alt="Banner"
-            fill
-            priority
-            loading="eager"
-            sizes="(max-width: 768px) 100vw, 516px"
-            className="object-contain"
-          />
-        </div>
-      </div>
-    </div>
-  </Carousel>
+      ))}
+      </Carousel>
+      }
     </div>
   )
 }
