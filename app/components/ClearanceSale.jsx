@@ -6,14 +6,14 @@ import ProductCardSkeleton from './skeliton/ProductCardSkeleton'
 
 const ClearanceSale = () => {
   const [product , setProduct] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [limit , setLimit] = useState(5)
-    const [sortBy , setSortBy] = useState('lowToHigh')
+  const [loading, setLoading] = useState(true)
+  const [limit , setLimit] = useState(5)
+  const [sortBy , setSortBy] = useState('lowToHigh')
 
   const fetchProduct =async()=>{
       try{
       const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
-          filterProduct: "all",
+          filterProduct: "All",
           limit,
           sortBy
         }})
@@ -33,6 +33,7 @@ const ClearanceSale = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, []);
+
   return (
     <div className='max-w-7xl mx-auto mt-15'>
         <CommonHead commonHeadText={"Clearance"} CommonHeadTextSmall={"Sale | Up to 70% OFF"}/>
@@ -46,7 +47,7 @@ const ClearanceSale = () => {
                 </div> 
                 ))
                 }
-            </div>
+        </div>
     </div>
   )
 }

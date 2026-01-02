@@ -14,7 +14,7 @@ const Recommended = () => {
   const fetchProduct =async()=>{
       try{
       const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
-          filterProduct: "all",
+          filterProduct: "All",
           limit,
         }})
       setProduct(response.data);
@@ -37,7 +37,7 @@ const Recommended = () => {
   return (
         <div className='max-w-7xl mx-auto mt-15 text-center'>
         <CommonHead commonHeadText={"Recommended"} CommonHeadTextSmall={"by E-Commerce"} />
-            <div className='py-10 flex items-center justify-center gap-4'>
+            <div className='py-10 sm:flex items-center justify-center grid grid-cols-3 gap-4'>
                 <CommonButton buttontext={"Best Seller"}/>
                 <CommonButton buttontext={"Top Rated"}/>
                 <CommonButton buttontext={"New"}/>

@@ -15,7 +15,7 @@ const NewArrival = () => {
       const fetchProduct =async()=>{
           try{
           const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
-              filterProduct: "all",
+              filterProduct: "All",
               limit,
               page
             }})

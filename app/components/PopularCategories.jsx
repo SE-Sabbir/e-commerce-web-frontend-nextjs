@@ -46,7 +46,7 @@ const PopularCategories = () => {
                             </div>
                     ))}
                 </div>
-                <div className='w-full flex items-center justify-between'>
+                <div className='w-full flex flex-wrap items-center justify-between'>
                     <Image className='w-158 rounded-xl' width={640} height={230} src="/productbanner.png" alt="product banner"/>
                     <Image className='w-158 rounded-xl' width={640} height={230} src="/offerbanner.png" alt="discount banner"/>
                 </div>

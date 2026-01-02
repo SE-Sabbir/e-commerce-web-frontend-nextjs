@@ -5,7 +5,7 @@ import { LuCopyright } from "react-icons/lu";
 const Footer = () => {
   return (
     <div className='max-w-7xl mx-auto mt-15'>
-        <div className='flex items-top justify-between'>
+        <div className='w-full mx-5 flex flex-wrap lg:flex-nowrap items-top justify-between gap-5'>
         <div>
             <h4 className='font-poppins font-bold text-lg text-deepdark'>Subscribe & Get <span className='text-[#EB4227]'>10%</span> OFF</h4>
             <div className='w-100 h-10 my-7 flex bg-gray-100 rounded-md '>
@@ -19,6 +19,7 @@ const Footer = () => {
                 <p><strong>Mail:</strong> contact@swatbabymall.com</p>
             </div>
         </div>
+        <div className='w-full sm:ml-5 flex flex-wrap justify-between gap-3'>
             <ul className='flex flex-col gap-2 font-poppins font-normal text-sm text-[#666666]'>
                 <li className='font-bold text-lg text-deepdark'>Top Categories</li>
                 <li>Homewares</li>
@@ -30,7 +31,7 @@ const Footer = () => {
             </ul>
             <ul className='flex flex-col gap-2 font-poppins font-normal text-sm text-[#666666]'>
                 <li className='font-bold text-lg text-deepdark'>Company</li>
-                <li>About Swatbabymall</li>
+                <li>About</li>
                 <li>Contact</li>
                 <li>Career</li>
                 <li>Blog</li>
@@ -47,6 +48,7 @@ const Footer = () => {
                 <li>My Account</li>
                 <li>Product Support</li>
             </ul>
+        </div>
         </div>
         <div className='py-5 flex items-center justify-center gap-4'>
             <Image width={20} height={10} src='/pay1.png' alt='payicon' className='aspect-auto' />
