@@ -1,15 +1,39 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoSearchOutline, IoCart, IoMenu, IoClose } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { GiRotaryPhone } from "react-icons/gi";
 import Link from 'next/link';
+import CartSidebar from './CartSidebar';
+import axios from 'axios';
 
 
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [product , setProduct] = useState(null)
+    
+    useEffect(() => {
+        const fetchProduct =async()=>{
+            try{
+            const response = await axios.get(`http://localhost:8000/cart/get-cart`,{
+                params:{creatorId:'6909bab7ec77eeef7168a39b'}
+            })
+            setProduct(response.data);
+            }
+            catch(err){
+            console.log(err)
+            }
+        }  
+        // Re-fetch when filters change
+            fetchProduct();
+        }, []);
+    
+    const cartList = product?.cartItem?.cartItem || []
+
   return (
     <nav className='w-full bg-[#01A49E] sticky top-0 z-50'>
             {/* --- TOP BAR --- */}
@@ -50,16 +74,16 @@ const Navbar = () => {
                     </div>
 
                     {/* Cart */}
-                    <div className='flex items-center gap-2'>
+                    <div onClick={() => setIsCartOpen(true)} className='flex items-center gap-2'>
                         <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white relative'>
                             <IoCart className='text-[#01A49E]'/>
                             <div className='absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center font-poppins text-[10px] text-white rounded-full bg-black'>
-                                5
+                                {cartList?.length || 0}
                             </div>
                         </div>
                         <div className='hidden xl:block'>
                             <p className='text-[10px] text-white leading-none'>CART</p>
-                            <span className='font-poppins text-sm font-bold text-white'>$1689.00</span>
+                            <span className='font-poppins text-sm font-bold text-white'>৳ {product?.total || 0}</span>
                         </div>
                     </div>
 
@@ -106,7 +130,14 @@ const Navbar = () => {
                     </div>
                 </div>
             )}
+            {/* 3. Connect the Sidebar here */}
+            <CartSidebar 
+                isOpen={isCartOpen} 
+                setIsOpen={setIsCartOpen} 
+                cartItems={cartItems} 
+            />
         </nav>
+        
   )
 }
 

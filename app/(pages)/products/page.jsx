@@ -27,13 +27,27 @@ const page = () => {
     const [loading, setLoading] = useState(true)
     const [limit , setLimit] = useState(20)
     const [sortBy , setSortBy] = useState()
+    const [minPrice , setMinPrice] = useState(0)
+    const [maxPrice , setMaxPrice] = useState(10000)
+    // Handlers to ensure we are working with Numbers, not Strings
+    const handleMinChange = (e) => {
+      const value = e.target.value === "" ? 0 : Number(e.target.value);
+      setMinPrice(value);
+    };
+
+    const handleMaxChange = (e) => {
+      const value = e.target.value === "" ? 0 : Number(e.target.value);
+      setMaxPrice(value);
+    };
   
     const fetchProduct =async()=>{
         try{
         const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
             filterProduct:category,
             limit,
-            sortBy
+            sortBy,
+            minPrice,
+            maxPrice
           }})
         setProduct(response.data);
       }
@@ -50,7 +64,7 @@ const page = () => {
       }, 300);
   
       return () => clearTimeout(delayDebounceFn);
-    }, [sortBy , category]);
+    }, [sortBy , category , minPrice , maxPrice ]);
 
   return (
     <div className="max-w-7xl mx-auto py-8">
@@ -94,7 +108,7 @@ const page = () => {
                   onClick={() => setCategory(cat.id)}
                   className={`px-4 py-2 rounded-md text-sm text-left transition-all
                     ${category === cat.id 
-                      ? 'bg-indigo-600 text-white font-bold' 
+                      ? 'bg-[#01A49E] text-white font-bold' 
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                 >
                   {cat.name}
@@ -105,13 +119,61 @@ const page = () => {
 
           {/* Price Range Filter (UI only) */}
           <div className="hidden lg:block border-t pt-8">
-            <h3 className="text-sm font-bold uppercase mb-4">Price Range</h3>
-            <input type="range" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
-            <div className="flex justify-between text-xs text-gray-500 mt-2">
-              <span>৳0</span>
-              <span>৳10,000+</span>
-            </div>
+          <h3 className="text-sm font-bold uppercase mb-4 text-gray-900">Price Range</h3>
+          
+          {/* 1. Visual readout of selected range */}
+          <div className="w-full flex justify-between text-xs font-bold text-[#01A49E] mb-2">
+            <span>৳{minPrice.toLocaleString()}</span>
+            <span>৳{maxPrice.toLocaleString()}</span>
           </div>
+
+          {/* 2. Range Slider (Controls the Max Price) */}
+          <input 
+            type="range" 
+            min="0"
+            max="10000" // Must be a number, not "10000+"
+            value={maxPrice} 
+            onChange={handleMaxChange}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#01A49E] " 
+          />
+
+          {/* 3. Number Inputs (Custom Value Selection) */}
+          <div className="w-full flex justify-between gap-3 text-xs text-gray-500 mt-6">
+            
+            {/* Min Price Input */}
+            <div className="flex flex-col flex-1 gap-1">
+              <label className="font-poppins font-semibold text-gray-700">৳ Min</label>
+              <input 
+                type="number" 
+                value={minPrice}
+                onChange={handleMinChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none focus:border-[#01A49E] focus:ring-1 focus:ring-[#01A49E] transition-all"
+                placeholder="0"
+              />
+            </div>
+
+            {/* Max Price Input */}
+            <div className="flex flex-col flex-1 gap-1">
+              <label className="font-poppins font-semibold text-gray-700">৳ Max</label>
+              <input 
+                type="number" 
+                value={maxPrice}
+                onChange={handleMaxChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none focus:border-[#01A49E] focus:ring-1 focus:ring-[#01A49E] transition-all"
+                placeholder="10000"
+              />
+            </div>
+
+          </div>
+          
+          {/* Quick Reset Label */}
+          <button 
+            onClick={() => { setMinPrice(0); setMaxPrice(10000); }}
+            className="text-[13px] text-[#01A49E] mt-3 hover:underline underline-offset-2"
+          >
+            Reset to default
+          </button>
+        </div>
         </aside>
 
         {/* --- PRODUCT GRID --- */}
@@ -129,7 +191,7 @@ const page = () => {
           {!loading && product.length === 0 && (
             <div className="text-center py-20 bg-gray-50 rounded-2xl">
               <p className="text-gray-500">No products found in this category.</p>
-              <button onClick={() => setCategory("All")} className="mt-4 text-indigo-600 font-bold">Clear Filters</button>
+              <button onClick={() => setCategory("All")} className="mt-4 text-[#01A49E] font-bold">Clear Filters</button>
             </div>
           )}
         </div>
@@ -138,39 +200,5 @@ const page = () => {
     </div>
   );
 };
-
-// Reusable Product Card Component
-const ProductCard = ({ item }) => {
-  return (
-    <div className="group cursor-pointer">
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 border">
-        {/* Discount Badge */}
-        {item.discountPrice < item.price && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">
-            {Math.round(((item.price - item.discountPrice) / item.price) * 100)}% OFF
-          </span>
-        )}
-        <img 
-          src={item.thumbnail} 
-          alt={item.title} 
-          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
-        />
-        {/* Quick Add Button */}
-        <button className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur py-2 rounded-lg text-xs font-bold shadow-sm opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
-          QUICK ADD
-        </button>
-      </div>
-      <div className="mt-3">
-        <h3 className="text-sm font-medium text-gray-700 truncate">{item.title}</h3>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="font-bold text-gray-900">৳{item.discountPrice}</span>
-          {item.discountPrice < item.price && (
-            <span className="text-xs text-gray-400 line-through">৳{item.price}</span>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export default page

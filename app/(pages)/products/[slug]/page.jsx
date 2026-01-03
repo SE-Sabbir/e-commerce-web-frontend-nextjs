@@ -17,8 +17,8 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [activeImg, setActiveImg] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
-    // 1. Initialize Quantity State
     const [quantity, setQuantity] = useState(1);
+
     // Logic to handle increment/decrement
     const handleIncrement = () => {
         if (quantity < product.stock) {
@@ -48,6 +48,25 @@ const page = () => {
         };
         fetchProduct();
     }, []);
+
+    
+    const handelsubmit =async(e)=>{
+      console.log('click hossa')
+      try{
+        const cartData = {
+          creatorId:'6909bab7ec77eeef7168a39b',
+          cartItem:[{
+            productId:product._id,
+            varient:selectedSize,
+            qty:quantity
+          }]
+        }
+        const response = await axios.post(`http://localhost:8000/cart/add-to-cart`,cartData)
+        console.log("Added to db" ,response.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12 bg-white">
@@ -160,7 +179,7 @@ const page = () => {
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 pt-4">
             <div className="flex gap-3">
-              <button className="flex-2 text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 bg-[#01A49E] active:bg-[#028d88] transition-all active:scale-[0.98]">
+              <button onClick={handelsubmit} className="flex-2 text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 bg-[#01A49E] active:bg-[#028d88] transition-all active:scale-[0.98]">
                 <HiShoppingCart size={20} />
                 ADD TO CART
               </button>
