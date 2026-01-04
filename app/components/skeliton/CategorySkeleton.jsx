@@ -2,30 +2,37 @@ import React from 'react'
 
 const CategorySkeleton = () => {
   return (
-    <div className="max-w-7xl mx-auto mt-15 text-center animate-pulse">
-
-      {/* HEAD SKELETON */}
-      {/* <div className="space-y-2 mb-12">
-        <div className="h-7 w-72 mx-auto bg-gray-300 rounded" />
-        <div className="h-4 w-48 mx-auto bg-gray-200 rounded" />
-      </div> */}
-
-      {/* CATEGORY CIRCLES */}
-      <div className="my-12 flex items-center gap-6 justify-center">
+<div className='max-w-7xl mx-auto px-2 sm:px-0 mt-15 animate-pulse'>
+      {/* Category Icons Skeleton */}
+      <div className='my-12 flex items-center gap-6 justify-center overflow-hidden'>
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="flex flex-col items-center gap-4">
-            <div className="w-27 h-27 rounded-full bg-gray-300" />
-            <div className="h-4 w-20 bg-gray-300 rounded" />
+          <div key={i} className='flex flex-col items-center gap-4'>
+            <div className='w-27 h-27 rounded-full bg-gray-200 border-2 border-gray-100'></div>
+            <div className='h-4 w-16 bg-gray-200 rounded'></div>
           </div>
         ))}
       </div>
 
-      {/* BOTTOM BANNERS */}
-      <div className="w-full flex items-center justify-between gap-6 mt-10">
-        <div className="w-158 h-58 rounded-xl bg-gray-300" />
-        <div className="w-158 h-58 rounded-xl bg-gray-300" />
-      </div>
+      {/* Main Content Area */}
+      <div className='w-full flex flex-wrap sm:flex-nowrap items-center justify-between gap-4'>
+        
+        {/* Offer Card Skeleton */}
+        <div className='w-full sm:w-87 h-103 bg-gray-200 rounded-xl shrink-0'></div>
 
+        {/* Product Grid Skeleton */}
+        <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-3 gap-4'>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className='py-3 space-y-3'>
+              {/* Card Image */}
+              <div className='w-full aspect-4/5 bg-gray-200 rounded-lg'></div>
+              {/* Card Title */}
+              <div className='h-4 w-3/4 bg-gray-200 rounded'></div>
+              {/* Card Price */}
+              <div className='h-4 w-1/2 bg-gray-200 rounded'></div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,6 +1,8 @@
 "use client"
 
 import SingleCart from "@/app/components/common/SingleCart";
+import Footer from "@/app/components/Footer";
+import OurService from "@/app/components/OurService";
 import ProductCardSkeleton from "@/app/components/skeliton/ProductCardSkeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -68,6 +70,7 @@ const page = () => {
     }, [sortBy , category , minPrice , maxPrice ]);
 
   return (
+    <>
     <div className="max-w-7xl mx-auto px-2 sm:px-0  py-8">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -196,9 +199,11 @@ const page = () => {
             </div>
           )}
         </div>
-
       </div>
     </div>
+      <OurService/>
+      <Footer/>
+    </>
   );
 };
 

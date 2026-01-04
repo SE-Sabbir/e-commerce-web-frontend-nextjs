@@ -51,9 +51,9 @@ const Footer = () => {
         </div>
         </div>
         <div className='py-5 flex items-center justify-center gap-4'>
-            <Image width={20} height={10} src='/pay1.png' alt='payicon' className='aspect-auto' />
-            <Image width={30} height={10} src='/pay2.png' alt='payicon' className='aspect-auto' />
-            <Image width={40} height={10} src='/pay3.png' alt='payicon' className='aspect-auto' />
+            <Image width={20} height={10} src='/pay1.png' alt='payicon' className='w-auto h-auto aspect-auto' />
+            <Image width={30} height={10} src='/pay2.png' alt='payicon' className='w-auto h-auto aspect-auto' />
+            <Image width={40} height={10} src='/pay3.png' alt='payicon' className='w-auto h-auto aspect-auto' />
         </div>
         <div className='py-7 flex items-center justify-center gap-2 border-t-2 border-[#f3eded]'>
             <LuCopyright/>

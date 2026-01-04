@@ -4,6 +4,7 @@ import { IoSearchOutline, IoCart, IoMenu, IoClose } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { GiRotaryPhone } from "react-icons/gi";
+import { MdClear } from "react-icons/md";
 import Link from 'next/link';
 import CartSidebar from './CartSidebar';
 import axios from 'axios';
@@ -15,6 +16,11 @@ const Navbar = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
     const [product , setProduct] = useState(null)
+    const [searchData , setSearchData] = useState('')
+    const [searchResult , setSearchResult] = useState([])
+    const [showDropdown , setShowDropdown] = useState(false)
+    const [showSearchBtn , setShowSearchBtn] = useState(false)
+    const cartList = product?.cartItem?.cartItem || []
     
     useEffect(() => {
         const fetchProduct =async()=>{
@@ -27,31 +33,67 @@ const Navbar = () => {
             catch(err){
             console.log(err)
             }
-        }  
+        }
         // Re-fetch when filters change
-            fetchProduct();
-        }, []);
-    
-    const cartList = product?.cartItem?.cartItem || []
+        fetchProduct();
+    }, []);
+    const handelSearchClear=()=>{
+        setShowSearchBtn(false)
+        setSearchData('')
+        setShowDropdown(false)
+    }
+    const handelSearch = async()=>{
+        if(!searchData.trim()){
+            setSearchResult([])
+            setShowDropdown(false)
+            return
+        }
+        try{
+            const limit = 500
+            const response = await axios.get("http://localhost:8000/product/public-product",{
+            params:{
+                filterProduct:'All',
+                searchData,
+                limit
+            }})
+            setSearchResult(response.data)
+            setShowDropdown(true)
+            setShowSearchBtn(true)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+    const hadleKeyPress =(e)=>{
+        if(e.key === 'Enter'){
+            handelSearch()
+            handelSearchClear()
+        }
+    }
+
 
   return (
-    <nav className='w-full bg-[#01A49E] sticky top-0 z-50'>
+    <nav className='w-full bg-[#01A49E] sticky top-0 z-50 '>
             {/* --- TOP BAR --- */}
-            <div className='max-w-7xl mx-auto px-4 lg:px-0 h-20 flex items-center justify-between gap-4'>
+            <div className='max-w-7xl mx-auto px-4 lg:px-0 h-20 flex items-center justify-between gap-4 '>
                 
                 {/* Logo */}
-                <Link href='/' className='flex items-center gap-2 shrink-0'>
-                    <img className='w-8 h-8 md:w-10 md:h-10 rounded-full' src={'favicon.ico'} alt="logo" />
-                    <h4 className='font-poppins font-bold text-white text-sm md:text-base'>MERN-ECOMMERCE</h4>
+                <Link href='/' className='flex items-center gap-2 shrink-0 '>
+                    <img className='w-8 h-8 md:w-10 md:h-10 rounded-full shadow-md cursor-pointer hover:shadow-xl transition' src={'favicon.ico'} alt="logo" />
+                    <h4 className='font-poppins font-bold text-white text-sm md:text-base '>MERN-ECOMMERCE</h4>
                 </Link>
 
                 {/* Search Bar - Hidden on Mobile, visible on MD+ */}
-                <div className='hidden lg:flex items-center flex-1 max-w-xl'>
-                    <div className='flex-1 h-11 px-5 flex items-center bg-white rounded-l-3xl'>
-                        <input className='w-full outline-none text-sm' type="text" placeholder='Search anything' />
-                        <button className='text-2xl text-gray-500'><IoSearchOutline /></button>
+                <div className='hidden lg:flex items-center flex-1 max-w-xl z-40 '>
+                    <div className='flex-1 h-11 px-5 flex items-center bg-white rounded-l-3xl shadow-md'>
+                        <input className='w-full outline-none text-sm' onKeyDown={hadleKeyPress} onChange={(e)=>setSearchData(e.target.value)} value={searchData} type="text" placeholder='Search anything' />
+                        {showSearchBtn?
+                        <button onClick={handelSearchClear} className='text-2xl text-gray-500 cursor-pointer hover:scale-108 '><MdClear/></button>
+                        :
+                        <button onClick={handelSearch} className='text-2xl text-gray-500 cursor-pointer hover:scale-108 z-60 '><IoSearchOutline /></button>
+                        }
                     </div>
-                    <div className='w-32 h-11 flex items-center bg-white rounded-r-3xl border-l border-gray-200 px-2'>
+                    <div className='w-32 h-11 flex items-center bg-white rounded-r-3xl border-l border-gray-200 px-2 shadow-md cursor-pointer hover:shadow-xl transition'>
                         <select className='w-full font-poppins font-semibold text-sm text-deepdark outline-none bg-transparent'>
                             <option value="">Categories</option>
                             <option value="mens">Mens</option>
@@ -59,12 +101,45 @@ const Navbar = () => {
                         </select>
                     </div>
                 </div>
+                {/* DROPDOWN RESULTS */}
+                {showDropdown && (
+                    <>
+                        {/* Transparent overlay to close dropdown when clicking outside */}
+                        <div 
+                            className="fixed inset-0 z-30" 
+                            onClick={() => setShowDropdown(false)} 
+                        />
+                        
+                        <div className=' w-135 max-h-90 bg-white rounded-b-2xl shadow-2xl border border-gray-100 absolute top-16 left-163 z-50 overflow-hidden overflow-y-auto '>
+                            {searchResult.length > 0 ? (
+                                searchResult.map((item) => (
+                                    <Link 
+                                        key={item._id} 
+                                        href={`/products/${item.slug}`} 
+                                        onClick={() => setShowDropdown(false)}
+                                        className='flex items-center gap-4 p-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-none'
+                                    >
+                                        <img src={item.thumbnail} alt="" className='w-12 h-12 rounded object-cover bg-gray-100' />
+                                        <div className='flex-1'>
+                                            <p className='text-sm font-bold text-gray-800 truncate'>{item.title}</p>
+                                            <p className='text-xs text-[#01A49E] font-bold'>৳{item.discountPrice}</p>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <div className='p-4 text-center text-gray-500 text-sm'>
+                                    No products found for "{searchData}"
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
 
                 {/* Right Side Icons/Links */}
-                <div className='flex items-center gap-2 md:gap-6'>
+                <div className='flex items-center gap-2 md:gap-6 '>
                     {/* User */}
                     <div className='flex items-center gap-2'>
-                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white'>
+                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white shadow-md cursor-pointer hover:shadow-xl transition'>
                             <FaUser className='text-[#01A49E]' />
                         </div>
                         <div className='hidden xl:block'>
@@ -75,7 +150,7 @@ const Navbar = () => {
 
                     {/* Cart */}
                     <div onClick={() => setIsCartOpen(true)} className='flex items-center gap-2'>
-                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white relative'>
+                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white relative shadow-md cursor-pointer hover:shadow-xl transition'>
                             <IoCart className='text-[#01A49E]'/>
                             <div className='absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center font-poppins text-[10px] text-white rounded-full bg-black'>
                                 {cartList?.length || 0}
@@ -99,7 +174,7 @@ const Navbar = () => {
 
             {/* --- BOTTOM BAR (Secondary Nav) --- */}
             {/* Hidden on screens smaller than LG */}
-            <div className='hidden lg:block w-full bg-[#039691]'>
+            <div className='hidden lg:block w-full bg-[#039691] shadow-md '>
                 <div className='max-w-7xl mx-auto h-12 flex items-center justify-between font-semibold text-white'>
                     <div className='flex items-center gap-10'>
                         <Link href='/' className='flex items-center gap-1 hover:text-black transition'>Home <MdOutlineKeyboardArrowDown/></Link>

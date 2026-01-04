@@ -34,20 +34,20 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className='max-w-7xl mx-auto bg-gray-100'>
+    <div className='max-w-7xl mx-auto rounded-b-2xl bg-gray-100 shadow-md cursor-pointer hover:shadow-xl transition'>
       {loading?
       <BannerSkeleton/>
       :
       <Carousel autoplay>
       {product.map((item)=>(
         <div key={item._id}>
-          <div className='w-full px-4 sm:px-0 h-125 flex items-center justify-around'>
+          <div className='w-full px-4 sm:px-0 h-125 flex items-center justify-around '>
             <div className='relative'>
             <h3 className='font-bold text-lg'>Featured</h3>
             <h4 className='w-72 mt-3 font-semibold text-4xl'>{item.title}</h4>
             <p className='w-35 mt-6 font-normal text-base'>Premium quality product with best comfort & style.</p>
             <Link href={`/products/${item.slug}`}>
-            <button className='w-35 h-12 mt-6 font-semibold text-tansform uppercase text-white text-sm rounded-xl bg-[#01A49E] cursor-pointer hover:scale-105'>Shop Now</button>
+            <button className='w-35 h-12 mt-6 font-semibold text-tansform uppercase text-white text-sm rounded-xl bg-[#01A49E] shadow-md cursor-pointer hover:scale-103 transition'>Shop Now</button>
             </Link>
             </div>
               {/* IMAGE */}
