@@ -32,7 +32,7 @@ const PopularCategories = () => {
 
 
   return (
-        <div className='max-w-7xl mx-auto mt-15 text-center'>
+        <div className='max-w-7xl mx-auto px-2 sm:px-0 mt-15'>
             <CommonHead commonHeadText={'Most popular categories'} CommonHeadTextSmall={'for baby products'}/>
             {loading?
             <CategorySkeleton/>
@@ -46,7 +46,7 @@ const PopularCategories = () => {
                             </div>
                     ))}
                 </div>
-                <div className='w-full flex flex-wrap items-center justify-between'>
+                <div className='w-full mx-auto flex flex-wrap items-center justify-between gap-4 '>
                     <Image className='w-158 rounded-xl' width={640} height={230} src="/productbanner.png" alt="product banner"/>
                     <Image className='w-158 rounded-xl' width={640} height={230} src="/offerbanner.png" alt="discount banner"/>
                 </div>

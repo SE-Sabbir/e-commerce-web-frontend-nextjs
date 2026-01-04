@@ -38,12 +38,12 @@ const NewArrival = () => {
   return (
         <div className='max-w-7xl mx-auto mt-15'>
         <CommonHead commonHeadText={"New"} CommonHeadTextSmall={"Arrival"}/>
-            <div className='py-10 flex items-center gap-5'>
+            <div className='py-10 w-fit mx-auto grid grid-cols-3 gap-4'>
                 <CommonButton buttontext={"Featured"}/>
                 <CommonButton buttontext={"Featured"}/>
                 <CommonButton buttontext={"Featured"}/>
             </div>
-            <div className='w-full flex flex-wrap items-center justify-between gap-3'>
+            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5'>
                 {loading?
                 Array.from({ length: 10 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :

@@ -11,15 +11,15 @@ const SingleCart = ({id ,slug ,pTitle , pImages=[] , pThumbnail ,pDisPrice , pPr
   return (
     <>
     <Link href={`/products/${slug}`}>
-      <div className="w-61 h-102 rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition">
+      <div className="w-50 sm:w-61 h-88 sm:h-100 rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition">
         <div className="m-5 flex flex-col items-center">
-          <h2 className="font-poppins font-semibold text-sm text-deepdark text-center mb-3">
+          <h2 className="font-poppins font-semibold text-sm text-deepdark text-center mb-1 sm:mb-3">
             {pTitle}
           </h2>
 
           <Rate size="small" disabled defaultValue={4} />
 
-          <div className="w-full h-56 py-2">
+          <div className="w-full h-40 sm:h-56 py-0 sm:py-2 ">
             <Carousel autoplaySpeed={4000} autoplay>
               {/* Thumbnail */}
               {pThumbnail && (
@@ -57,15 +57,15 @@ const SingleCart = ({id ,slug ,pTitle , pImages=[] , pThumbnail ,pDisPrice , pPr
             </Carousel>
           </div>
 
-          <h3 className="w-full flex items-center gap-2 font-poppins font-semibold text-xl text-[#EB4227]">
+          <div className="w-full pt-9 sm:pt-0 flex items-center gap-2 font-poppins font-semibold text-xl text-[#EB4227]">
             ${pDisPrice}
             <span className="text-sm text-[#666666] line-through">
               ${pPrice}
             </span>
-          </h3>
+          </div>
 
           <div className="w-full flex items-end justify-between">
-            <p className="pt-4 font-poppins text-sm text-[#666666]">
+            <p className=" pt-2 sm:pt-4 font-poppins text-sm text-[#666666]">
               <span className="font-semibold text-deepdark">1286</span>{" "}
               Purchases
             </p>

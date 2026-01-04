@@ -41,7 +41,7 @@ const Banner = () => {
       <Carousel autoplay>
       {product.map((item)=>(
         <div key={item._id}>
-          <div className='w-full h-125 flex items-center justify-around'>
+          <div className='w-full px-4 sm:px-0 h-125 flex items-center justify-around'>
             <div className='relative'>
             <h3 className='font-bold text-lg'>Featured</h3>
             <h4 className='w-72 mt-3 font-semibold text-4xl'>{item.title}</h4>

@@ -37,12 +37,12 @@ const ClearanceSale = () => {
   return (
     <div className='max-w-7xl mx-auto mt-15'>
         <CommonHead commonHeadText={"Clearance"} CommonHeadTextSmall={"Sale | Up to 70% OFF"}/>
-        <div className='w-full flex flex-wrap items-center justify-between gap-3'>
+        <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5'>
                 {loading?
                 Array.from({ length: 5 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :
                 product.map((pitem , i)=>(
-                <div key={i} className='py-7'>
+                <div key={i} className='py-3'>
                 <SingleCart slug={pitem.slug} key={pitem._id} id={pitem._id} pTitle={pitem.title} pThumbnail={pitem.thumbnail} pImages={pitem.subImages} pDisPrice={pitem.discountPrice} pPrice={pitem.price} />
                 </div> 
                 ))

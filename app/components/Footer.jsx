@@ -4,8 +4,8 @@ import { LuCopyright } from "react-icons/lu";
 
 const Footer = () => {
   return (
-    <div className='max-w-7xl mx-auto mt-15'>
-        <div className='w-full mx-5 flex flex-wrap lg:flex-nowrap items-top justify-between gap-5'>
+    <div className='max-w-7xl mx-auto mt-15 sabbir '>
+        <div className='mx-5 sm:mx-0 flex flex-wrap lg:flex-nowrap items-top justify-between gap-5'>
         <div>
             <h4 className='font-poppins font-bold text-lg text-deepdark'>Subscribe & Get <span className='text-[#EB4227]'>10%</span> OFF</h4>
             <div className='w-100 h-10 my-7 flex bg-gray-100 rounded-md '>

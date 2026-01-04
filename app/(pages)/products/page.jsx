@@ -1,5 +1,6 @@
 "use client"
-import SingleCartWithButton from "@/app/components/common/SingleCartWithButton";
+
+import SingleCart from "@/app/components/common/SingleCart";
 import ProductCardSkeleton from "@/app/components/skeliton/ProductCardSkeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -67,7 +68,7 @@ const page = () => {
     }, [sortBy , category , minPrice , maxPrice ]);
 
   return (
-    <div className="max-w-7xl mx-auto py-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-0  py-8">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
@@ -177,13 +178,13 @@ const page = () => {
         </aside>
 
         {/* --- PRODUCT GRID --- */}
-        <div className='w-full grid lg:grid-cols-4 sm:grid-cols-1 gap-4 '>
+        <div className='w-full grid grid-cols-2 sm:grid-cols-4'>
                 {loading?
                 Array.from({ length: 10 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :
                 product.map((pitem , i)=>(
-                <div key={i} className='py-5'>
-                <SingleCartWithButton slug={pitem.slug} key={pitem._id} id={pitem._id} pTitle={pitem.title} pThumbnail={pitem.thumbnail} pImages={pitem.subImages} pDisPrice={pitem.discountPrice} pPrice={pitem.price} />
+                <div key={i} className='py-3'>
+                <SingleCart slug={pitem.slug} key={pitem._id} id={pitem._id} pTitle={pitem.title} pThumbnail={pitem.thumbnail} pImages={pitem.subImages} pDisPrice={pitem.discountPrice} pPrice={pitem.price} />
                 </div> 
                 ))
                 }

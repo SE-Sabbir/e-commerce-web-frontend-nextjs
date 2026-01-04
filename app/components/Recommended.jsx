@@ -35,18 +35,16 @@ const Recommended = () => {
   }, []);
 
   return (
-        <div className='max-w-7xl mx-auto mt-15 text-center'>
+        <div className='max-w-7xl mx-auto mt-15'>
         <CommonHead commonHeadText={"Recommended"} CommonHeadTextSmall={"by E-Commerce"} />
-            <div className='py-10 sm:flex items-center justify-center grid grid-cols-3 gap-4'>
+            <div className='py-10 w-fit mx-auto grid grid-cols-3 sm:grid-cols-5 gap-4'>
                 <CommonButton buttontext={"Best Seller"}/>
                 <CommonButton buttontext={"Top Rated"}/>
                 <CommonButton buttontext={"New"}/>
                 <CommonButton buttontext={"New"}/>
                 <CommonButton buttontext={"New"}/>
-                <CommonButton buttontext={"New"}/>
-                <CommonButton buttontext={"New"}/>
             </div>
-            <div className='w-full flex flex-wrap items-center justify-between gap-3'>
+            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5 '>
                 {loading?
                 Array.from({ length: 10 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :
