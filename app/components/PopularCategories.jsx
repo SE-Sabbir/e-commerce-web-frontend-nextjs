@@ -6,6 +6,7 @@ import axios from 'axios';
 import OfferCart from './common/OfferCart';
 import SingleCart from './common/SingleCart';
 import CategorySkeleton from './skeliton/CategorySkeleton';
+import Link from 'next/link';
 
 const PopularCategories = () => {
     const [product , setProduct] = useState([])
@@ -55,10 +56,12 @@ const PopularCategories = () => {
             <div>
                 <div className='my-12 flex items-center gap-6 justify-center'>
                     {productCategory.map((item)=>(
+                        <Link key={item._id} href={`/products?catId=${item._id}`} >
                             <div key={item._id} className='flex flex-col items-center gap-4 '>
                                 <Image className='w-27 h-27 rounded-full bg-black border-2 border-[#88fffb] shadow-md cursor-pointer hover:shadow-xl transition ' width={110} height={110} src={item.categoryImage} alt='category icon' />
                                 <p className=' font-poppins font-bold text-sm text-deepdark '>{item.categoryName}</p>
                             </div>
+                        </Link>
                     ))}
                 </div>
                 <div className='w-full h-103 mx-auto flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 '>

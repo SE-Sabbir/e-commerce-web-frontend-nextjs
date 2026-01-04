@@ -5,6 +5,7 @@ import Footer from "@/app/components/Footer";
 import OurService from "@/app/components/OurService";
 import ProductCardSkeleton from "@/app/components/skeliton/ProductCardSkeleton";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
@@ -23,12 +24,21 @@ const page = () => {
     { name: "Lungi", id: "69213a8ae6e5028295df2066" },
     ];
 
-    const [category, setCategory] = useState("All");
+    const searchParams = useSearchParams()
+    const initialCat =searchParams.get('catId')|| "All";
+    const [category, setCategory] = useState(initialCat);
+
+    // useEffect(()=>{
+    //   const urlCat = searchParams.get('catId')
+    //   if(urlCat) {
+    //     setCategory(urlCat)
+    //   }
+    // },[searchParams])
 
     // Fetching data based on filters
     const [product , setProduct] = useState([])
     const [loading, setLoading] = useState(true)
-    const [limit , setLimit] = useState(20)
+    const [limit , setLimit] = useState(50)
     const [sortBy , setSortBy] = useState()
     const [minPrice , setMinPrice] = useState(0)
     const [maxPrice , setMaxPrice] = useState(10000)
