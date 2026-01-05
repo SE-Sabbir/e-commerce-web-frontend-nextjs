@@ -4,13 +4,41 @@ import Image from 'next/image'
 import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeOffOutline } from "react-icons/io5";
 import Link from 'next/link';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
 
 
 const page = () => {
-    const [showPass , setShowPass]=useState(false)
+    const navigate = useRouter()
+    const [showPass , setShowPass] = useState(false)
+    const [userData , setUserData] = useState(null)
+    const [formData , setFormData] = useState({
+        email:"",
+        password:""
+    })
     const togglePassVisibility = ()=>{
         setShowPass(!showPass)
     }
+    const handelSubmit =async(e)=>{
+        e.preventDefault()
+        console.log('btn click hossa')
+        console.log(formData)
+        try{
+            const response = await axios.post("http://localhost:8000/auth/login", formData)
+            setUserData(response.data)
+            if(response.data.accessToken){
+                localStorage.setItem("authToken",response.data.accessToken)
+                localStorage.setItem("userInfo" ,JSON.stringify(response.data))
+            }
+            navigate.push("/")
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    console.log(userData)
   return (
     <div className='max-w-7xl mx-auto mt-50 flex items-center justify-between'>
         <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto'/>
@@ -18,7 +46,7 @@ const page = () => {
             <h2 className=' pt-5 font-poppins font-semibold text-3xl text-[#01A49E] '>Welcome Back</h2>
             <h3 className=' pt-2 font-poppins font-normal text-sm text-deepdark uppercase '>login to continue</h3>
             {/* Form */}
-            <form>
+            <form onSubmit={handelSubmit}>
                 <div>
                     <div className='mt-7'>
                         <label className='font-poppins font-normal text-deepdark'>Email Address</label>
@@ -27,6 +55,7 @@ const page = () => {
                         className='w-full px-3 outline-none'
                         type="email"
                         placeholder='Example@gmail.com'
+                        onChange={(e)=>setFormData({...formData,email:e.target.value})}
                         required
                         />
                         </div>
@@ -38,6 +67,7 @@ const page = () => {
                         className='w-full px-3 outline-none'
                         type={showPass? "text" :"password"}
                         placeholder='6-12 letter'
+                        onChange={(e)=>setFormData({...formData,password:e.target.value})}
                         required
                         />
                         <button onClick={togglePassVisibility} type='button' className=' active:text-deepdark '>

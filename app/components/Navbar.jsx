@@ -8,6 +8,9 @@ import { MdClear } from "react-icons/md";
 import Link from 'next/link';
 import CartSidebar from './CartSidebar';
 import axios from 'axios';
+import Image from 'next/image';
+
+
 
 
 
@@ -21,6 +24,27 @@ const Navbar = () => {
     const [showDropdown , setShowDropdown] = useState(false)
     const [showSearchBtn , setShowSearchBtn] = useState(false)
     const cartList = product?.cartItem?.cartItem || []
+
+    const [userInfo , setUserInfo] = useState([])
+    console.log(userInfo)
+
+    useEffect(()=>{
+        const storeData = localStorage.getItem('userInfo')
+        if(storeData){
+            try{
+                const storeDataObject = JSON.parse(storeData)
+                setUserInfo(storeDataObject.userInfo)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+    },[])
+    const handelLogout =()=>{
+        console.log('btn click hossa')
+        localStorage.clear()
+    }
+
     
     useEffect(() => {
         const fetchProduct =async()=>{
@@ -71,6 +95,7 @@ const Navbar = () => {
         }
     }
 
+    console.log(userInfo.userName)
 
   return (
     <nav className='w-full bg-[#01A49E] sticky top-0 z-50 '>
@@ -139,12 +164,24 @@ const Navbar = () => {
                 <div className='flex items-center gap-2 md:gap-6 '>
                     {/* User */}
                     <div className='flex items-center gap-2'>
-                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full bg-white shadow-md cursor-pointer hover:shadow-xl transition'>
+                        <div className='w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full overflow-hidden bg-white shadow-md cursor-pointer hover:shadow-xl transition'>
+                            {userInfo?
+                            <Image src={userInfo.avatar} alt='profile Image' width={100} height={100} />
+                            :
                             <FaUser className='text-[#01A49E]' />
+                            }
                         </div>
                         <div className='hidden xl:block'>
+                            {userInfo?
+                            <p className='text-[12px] text-white leading-none'>{userInfo.userName}</p>
+                            :
                             <p className='text-[10px] text-white leading-none'>WELCOME</p>
-                            <Link href='/login' className='font-poppins text-sm font-bold text-white'>LOGIN / REGISTER</Link>
+                            }
+                            {userInfo?
+                            <button onClick={handelLogout} className='font-poppins text-sm font-bold text-white cursor-pointer '>LOGOUT</button>
+                            :
+                            <Link href='/login' className='font-poppins text-sm font-bold text-white cursor-pointer '>LOGIN / REGISTER</Link>
+                            }
                         </div>
                     </div>
 
