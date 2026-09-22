@@ -16,6 +16,7 @@ const Banner = () => {
           filterProduct: "All",
           limit,
         }})
+      console.log("Banner Products:", response.data)
       setProduct(response.data);
     }
     catch(err){
@@ -53,7 +54,7 @@ const Banner = () => {
               {/* IMAGE */}
             <div className="relative w-130 h-95">
               <Image
-                src={item.thumbnail}
+                src={item?.thumbnail}
                 alt="Banner"
                 fill
                 priority
