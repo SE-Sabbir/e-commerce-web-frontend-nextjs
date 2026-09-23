@@ -25,6 +25,7 @@ const Navbar = () => {
   console.log(userInfo);
 
   useEffect(() => {
+    const loadUserInfo = () => {
     const storeData = localStorage.getItem("userInfo");
     if (storeData) {
       try {
@@ -34,7 +35,16 @@ const Navbar = () => {
       } catch (err) {
         console.log(err);
       }
+    } else {
+      setUserInfo(null);
     }
+    };
+    loadUserInfo();
+    window.addEventListener("authChanged", loadUserInfo);
+
+    return () => {
+      window.removeEventListener("authChanged", loadUserInfo);
+    };
   }, []);
   
   const handelLogout = () => {
@@ -45,12 +55,14 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      const userId = userInfo?.userId || userInfo?._id || userInfo?.id ; // Use the user ID from userInfo
+      if (!userId) {
+        console.log("User ID not found");
+        return;
+      }
       try {
         const response = await axios.get(
-          `http://localhost:8000/cart/get-cart`,
-          {
-            params: { creatorId: "6909bab7ec77eeef7168a39b" },
-          },
+          `http://localhost:8000/cart/get-cart?creatorId=${userId}`
         );
         setProduct(response.data);
       } catch (err) {
@@ -59,7 +71,7 @@ const Navbar = () => {
     };
     // Re-fetch when filters change
     fetchProduct();
-  }, []);
+  }, [userInfo]);
   const handelSearchClear = () => {
     setShowSearchBtn(false);
     setSearchData("");

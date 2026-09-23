@@ -16,7 +16,6 @@ const Banner = () => {
           filterProduct: "All",
           limit,
         }})
-      console.log("Banner Products:", response.data)
       setProduct(response.data);
     }
     catch(err){

@@ -23,13 +23,15 @@ const page = () => {
     const handelSubmit =async(e)=>{
         e.preventDefault()
         console.log('btn click hossa')
-        console.log(formData)
         try{
             const response = await axios.post("http://localhost:8000/auth/login", formData)
             setUserData(response.data)
-            if(response.data.accessToken){
-                localStorage.setItem("authToken",response.data.accessToken)
+            const authToken = response.data?.accessToken;
+
+            if(authToken){
+                localStorage.setItem("authToken", authToken);
                 localStorage.setItem("userInfo" ,JSON.stringify(response.data))
+                window.dispatchEvent(new Event("authChanged")); // Notify other tabs about the change
             }
             navigate.push("/")
         }
