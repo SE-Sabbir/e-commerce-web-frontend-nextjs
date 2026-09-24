@@ -8,7 +8,7 @@ const Footer = () => {
         <div className='mx-5 sm:mx-0 flex flex-wrap lg:flex-nowrap items-top justify-between gap-5'>
         <div>
             <h4 className='font-poppins font-bold text-lg text-deepdark'>Subscribe & Get <span className='text-[#EB4227]'>10%</span> OFF</h4>
-            <div className='w-100 h-10 my-7 flex bg-gray-100 rounded-md '>
+            <div className='w-full h-10 my-7 flex bg-gray-100 rounded-md '>
                 <input className='w-full px-3 outline-none' type="email" placeholder='Email Address' />
                 <button className='w-40 h-10 font-poppins font-normal text-sm text-white rounded-r-md bg-[#01A49E] active:scale-105 active:bg-[#028d88] '>subscribe</button>
             </div>

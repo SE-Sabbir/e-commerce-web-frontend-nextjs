@@ -16,16 +16,16 @@ const page = () => {
         setConShowPass(!showConPass)
     }
   return (
-    <div className='max-w-7xl mx-auto mt-20 flex items-center justify-between'>
-        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto'/>
+    <div className='w-full max-w-7xl mx-auto mt-5 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-10 items-center justify-center px-2 sm:px-0'>
+        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto mx-auto hidden sm:block '/>
         <div>
-            <h2 className=' pt-5 font-poppins font-semibold text-3xl text-[#01A49E] '>Register Form</h2>
+            <h2 className=' pt-5 font-poppins font-semibold text-center sm:text-left text-3xl text-[#01A49E] '>Register Form</h2>
             {/* Form */}
             <form>
                 <div>
                     <div className='mt-7'>
                         <label className='font-poppins font-normal text-deepdark'>Your Name</label>
-                        <div className='w-122 py-4 mt-3 border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type="text"
@@ -36,7 +36,7 @@ const page = () => {
                     </div>
                     <div className='mt-4'>
                         <label className='font-poppins font-normal text-deepdark'>Email Address</label>
-                        <div className='w-122 py-4 mt-3 border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type="email"
@@ -47,7 +47,7 @@ const page = () => {
                     </div>
                     <div className='mt-4'>
                         <label className='font-poppins font-normal text-deepdark'>Phone</label>
-                        <div className='w-122 py-4 mt-3 border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type="email"
@@ -56,10 +56,10 @@ const page = () => {
                         />
                         </div>
                     </div>
-                    <div className='flex items-center justify-between gap-2'>
+                    <div className='grid sm:grid-cols-2 gap-2'>
                     <div className='mt-4'>
                         <label className='font-poppins font-normal text-deepdark'>Password</label>
-                        <div className='w-60 py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type={showPass? "text" :"password"}
@@ -77,7 +77,7 @@ const page = () => {
                     </div>
                     <div className='mt-4'>
                         <label className='font-poppins font-normal text-deepdark'>Confirme Password</label>
-                        <div className='w-60 py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type={showConPass? "text" :"password"}
@@ -95,11 +95,11 @@ const page = () => {
                     </div>
                     </div>
                 </div>
-                <div className='mt-4'>
-                    <button type='submit' className='px-10 py-4 font-poppins font-normal text-base text-white rounded-md bg-[#01A49E] cursor-pointer active:scale-105 active:bg-[#02807b] '>LOGIN</button>
+                <div className='w-full justify-center flex sm:block mt-4'>
+                    <button type='submit' className='px-10 py-4 font-poppins font-normal text-base text-white rounded-md bg-[#01A49E] cursor-pointer active:scale-105 active:bg-[#02807b] '>REGISTER</button>
                 </div>
             </form>
-            <p className='mt-4 font-poppins font-normal text-base text-deepdark cursor-pointer' >Already have an Account ? <Link href='/login' className=' text-[#01A49E]'>Login</Link></p>
+            <p className='mt-4 mb-20 font-poppins font-normal text-center sm:text-left text-base text-deepdark cursor-pointer' >Already have an Account ? <Link href='/login' className=' text-[#01A49E]'>Login</Link></p>
         </div>
     </div>
   )

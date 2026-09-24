@@ -11,7 +11,7 @@ const SingleCart = ({id ,slug ,pTitle , pImages=[] , pThumbnail ,pDisPrice , pPr
   return (
     <>
     <Link href={`/products/${slug}`}>
-      <div className="w-50 sm:w-61 h-88 sm:h-100 rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition">
+      <div className="w-full h-88 sm:h-100 rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition">
         <div className="m-5 flex flex-col items-center">
           <h2 className="font-poppins font-semibold text-sm text-deepdark text-center mb-1 sm:mb-3">
             {pTitle}

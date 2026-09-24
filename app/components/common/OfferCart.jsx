@@ -5,10 +5,10 @@ import { FaRegHeart } from "react-icons/fa6";
 import { Carousel } from 'antd';
 import { PiGift } from "react-icons/pi";
 
-const OfferCart = ({offerPtitle , offerPimg , offerPprice ,offerPdisPrice , offerPcupon}) => {
+const OfferCart = ({offerPtitle , offerPimg , offerPprice , offerPdisPrice , offerPcupon}) => {
   return (
     <>
-    <div className='w-132 h-100 flex flex-col items-center rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition'>
+    <div className='w-full h-100 flex flex-col items-center rounded-2xl border border-[#CCCCCC] shadow-md cursor-pointer hover:shadow-xl transition'>
         <div className='m-5 flex items-center'>
             <div className='w-50 h-50'>
             <Carousel autoplay>
@@ -30,7 +30,7 @@ const OfferCart = ({offerPtitle , offerPimg , offerPprice ,offerPdisPrice , offe
                 </div>
             </div>
         </div>
-        <div className='w-121 h-33 flex items-center justify-around bg-[#F9F1E4]'>
+        <div className='w-full h-33 flex items-center justify-around bg-[#F9F1E4]'>
             <PiGift className='text-8xl text-[#f87a7a] rotate-15'/>
             <div>
             <p className='font-poppins font-semibold text-base text-deepdark '> Buy 02 boxes get a Snack Tray</p>

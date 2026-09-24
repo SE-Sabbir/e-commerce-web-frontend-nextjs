@@ -26,7 +26,7 @@ const PopularCategories = () => {
     }
     const fetchProduct = async()=>{
         try{
-        const limit = 3;
+        const limit = 2;
         const response = await axios.get("http://localhost:8000/product/public-product",{params: {
               filterProduct: "All",
               limit
@@ -64,14 +64,14 @@ const PopularCategories = () => {
                         </Link>
                     ))}
                 </div>
-                <div className='w-full h-103 mx-auto flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 '>
+                <div className='w-full  mx-auto grid sm:grid-cols-2 gap-4 '>
                     {
-                    <OfferCart offerPtitle={'Buy 02 boxes get a Snack Tray'} offerPcupon={'Winter26'}/>
+                    <OfferCart offerPtitle={'Buy 02 boxes get a Snack Tray'} offerPdisPrice={100} offerPcupon={'Winter26'}/>
                     }
-                    <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-3'>
+                    <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-4 '>
                     {
                     product.map((pitem , i)=>(
-                    <div key={i} className='py-3'>
+                    <div key={i}>
                     <SingleCart slug={pitem.slug} key={pitem._id} id={pitem._id} pTitle={pitem.title} pThumbnail={pitem.thumbnail} pImages={pitem.subImages} pDisPrice={pitem.discountPrice} pPrice={pitem.price} />
                     </div> 
                     ))

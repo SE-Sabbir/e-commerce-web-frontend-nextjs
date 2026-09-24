@@ -22,7 +22,6 @@ const Navbar = () => {
   const cartList = product?.cartItem?.cartItem || [];
 
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo);
 
   useEffect(() => {
     const loadUserInfo = () => {
@@ -48,16 +47,16 @@ const Navbar = () => {
   }, []);
   
   const handelLogout = () => {
-    console.log("btn click hossa");
     localStorage.clear();
     setUserInfo(null);
+    setIsMenuOpen(false);
+    window.dispatchEvent(new Event("authChanged"));
   };
 
   useEffect(() => {
     const fetchProduct = async () => {
       const userId = userInfo?.userId || userInfo?._id || userInfo?.id ; // Use the user ID from userInfo
       if (!userId) {
-        console.log("User ID not found");
         return;
       }
       try {
@@ -117,11 +116,11 @@ const Navbar = () => {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0 ">
           <img
-            className="w-8 h-8 md:w-10 md:h-10 rounded-full shadow-md cursor-pointer hover:shadow-xl transition"
+            className="w-10 h-10 md:w-10 md:h-10 rounded-full shadow-md cursor-pointer hover:shadow-xl transition"
             src={"favicon.ico"}
             alt="logo"
           />
-          <h4 className="font-poppins font-bold text-white text-sm md:text-base ">
+          <h4 className="font-poppins font-bold text-white text-md md:text-base ">
             MERN-ECOMMERCE
           </h4>
         </Link>
@@ -206,44 +205,48 @@ const Navbar = () => {
         {/* Right Side Icons/Links */}
         <div className="flex items-center gap-2 md:gap-6 ">
           {/* User */}
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full overflow-hidden bg-white shadow-md cursor-pointer hover:shadow-xl transition">
-              {userInfo?.avatar ? (
-                <Image
-                  src={userInfo.avatar}
-                  alt="profile Image"
-                  width={100}
-                  height={100}
-                />
-              ) : (
-                <FaUser className="text-[#01A49E]" />
-              )}
-            </div>
-            <div className="hidden xl:block">
-              {userInfo ? (
+          {userInfo ? (
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 md:w-10 md:h-10 text-xl flex items-center justify-center rounded-full overflow-hidden bg-white shadow-md cursor-pointer hover:shadow-xl transition">
+                {userInfo?.avatar ? (
+                  <Image
+                    src={userInfo.avatar}
+                    alt="profile Image"
+                    width={100}
+                    height={100}
+                  />
+                ) : (
+                  <FaUser className="text-[#01A49E]" />
+                )}
+              </div>
+              <div className="hidden xl:block">
                 <p className="text-[12px] text-white leading-none">
-                  {userInfo.userName}
+                  {userInfo.userName || userInfo.name || "My profile"}
                 </p>
-              ) : (
-                <p className="text-[10px] text-white leading-none">WELCOME</p>
-              )}
-              {userInfo ? (
                 <button
                   onClick={handelLogout}
                   className="font-poppins text-sm font-bold text-white cursor-pointer "
                 >
                   LOGOUT
                 </button>
-              ) : (
-                <Link
-                  href="/login"
-                  className="font-poppins text-sm font-bold text-white cursor-pointer "
-                >
-                  LOGIN / REGISTER
-                </Link>
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="hidden xl:flex items-center gap-3">
+              <Link
+                href="/login"
+                className="font-poppins text-sm font-bold text-white hover:text-black transition"
+              >
+                LOGIN
+              </Link>
+              <Link
+                href="/register"
+                className="font-poppins text-sm font-bold text-white hover:text-black transition"
+              >
+                REGISTER
+              </Link>
+            </div>
+          )}
 
           {/* Cart */}
           <div
@@ -307,7 +310,54 @@ const Navbar = () => {
 
       {/* --- MOBILE DRAWER MENU --- */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-[#039691] border-t border-white/10">
+        <div className="lg:hidden bg-[#039691] border-t border-white/10 shadow-2xl">
+            <div className="w-full border-t border-white/15">
+              {userInfo ? (
+                <div className=" flex items-center justify-between gap-3 rounded-xl bg-[#1f2937] p-3 shadow-lg">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-[#01A49E]">
+                      {userInfo?.avatar ? (
+                        <Image
+                          src={userInfo.avatar}
+                          alt="Profile image"
+                          width={44}
+                          height={44}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <FaUser className="text-[#01A49E]" />
+                      )}
+                    </div>
+                    <span className="text-white text-sm">
+                      {userInfo.userName || userInfo.name || "My profile"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handelLogout}
+                    className="shrink-0 rounded-lg bg-[#01A49E] px-3 py-2 text-xs font-bold text-white transition hover:bg-[#02807b]"
+                  >
+                    LOGOUT
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center bg-[#1f2937] p-3 gap-5">
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="rounded-lg border border-[#01A49E] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#01A49E]"
+                  >
+                    LOGIN
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="rounded-lg bg-[#01A49E] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#02807b]"
+                  >
+                    REGISTER
+                  </Link>
+                </div>
+              )}
+            </div>
           <div className="flex flex-col p-4 gap-4 text-white font-semibold">
             {/* Mobile Search */}
             <div className="flex bg-white rounded-lg p-2">
@@ -327,6 +377,7 @@ const Navbar = () => {
             <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
               Contact
             </Link>
+            
             <div className="pt-4 border-t border-white/20 text-sm">
               <p>Hotline: 01312389439</p>
             </div>

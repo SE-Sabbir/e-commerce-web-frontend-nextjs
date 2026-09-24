@@ -44,7 +44,7 @@ const Recommended = () => {
                 <CommonButton buttontext={"New"}/>
                 <CommonButton buttontext={"New"}/>
             </div>
-            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5 '>
+            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-6 md:grid-cols-4 gap-4 '>
                 {loading?
                 Array.from({ length: 10 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :

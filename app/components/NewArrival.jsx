@@ -43,7 +43,7 @@ const NewArrival = () => {
                 <CommonButton buttontext={"Featured"}/>
                 <CommonButton buttontext={"Featured"}/>
             </div>
-            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5'>
+            <div className='w-full px-2 sm:px-0 grid grid-cols-2 sm:grid-cols-5 md:grid-cols-4 gap-4 '>
                 {loading?
                 Array.from({ length: 10 }).map((_, i) => (<ProductCardSkeleton key={i} />))
                 :

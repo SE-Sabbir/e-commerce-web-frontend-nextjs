@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 const page = () => {
     const navigate = useRouter()
     const [showPass , setShowPass] = useState(false)
+    const [errorMessage , setErrorMessage] = useState("")
     const [userData , setUserData] = useState(null)
     const [formData , setFormData] = useState({
         email:"",
@@ -22,7 +23,6 @@ const page = () => {
     }
     const handelSubmit =async(e)=>{
         e.preventDefault()
-        console.log('btn click hossa')
         try{
             const response = await axios.post("http://localhost:8000/auth/login", formData)
             setUserData(response.data)
@@ -37,22 +37,23 @@ const page = () => {
         }
         catch(err){
             console.log(err)
+            const errorMessage = err.response?.data?.message;
+            setErrorMessage(errorMessage)
         }
     }
 
-    console.log(userData)
   return (
-    <div className='max-w-7xl mx-auto mt-50 flex items-center justify-between'>
-        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto'/>
+    <div className='w-full max-w-7xl mx-auto mt-10 sm:mt-40 grid grid-cols-1 sm:grid-cols-2 gap-10 items-center justify-center px-2 sm:px-0'>
+        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto  mx-auto '/>
         <div>
-            <h2 className=' pt-5 font-poppins font-semibold text-3xl text-[#01A49E] '>Welcome Back</h2>
-            <h3 className=' pt-2 font-poppins font-normal text-sm text-deepdark uppercase '>login to continue</h3>
+            <h2 className=' pt-5 font-poppins font-semibold text-center sm:text-left text-3xl text-[#01A49E] '>Welcome Back</h2>
+            <h3 className=' pt-2 font-poppins font-normal text-center sm:text-left text-sm text-red-500 uppercase '>{errorMessage}</h3>
             {/* Form */}
             <form onSubmit={handelSubmit}>
                 <div>
-                    <div className='mt-7'>
+                    <div className='w-full mt-7'>
                         <label className='font-poppins font-normal text-deepdark'>Email Address</label>
-                        <div className='w-120 py-4 mt-3 border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type="email"
@@ -62,9 +63,9 @@ const page = () => {
                         />
                         </div>
                     </div>
-                    <div className='mt-6'>
+                    <div className='w-full mt-6'>
                         <label className='font-poppins font-normal text-deepdark'>Password</label>
-                        <div className='w-120 py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
+                        <div className='w-full py-4 mt-3 flex items-center justify-between border border-[#01A49E] rounded-md'>
                         <input
                         className='w-full px-3 outline-none'
                         type={showPass? "text" :"password"}
@@ -83,11 +84,11 @@ const page = () => {
                     </div>
                     <p className='mt-2 font-poppins font-light text-sm text-deepdark underline cursor-pointer'>Forget Password ?</p>
                 </div>
-                <div className='mt-6'>
+                <div className='w-full flex justify-center sm:block mt-6'>
                     <button type='submit' className='px-10 py-4 font-poppins font-normal text-base text-white rounded-md bg-[#01A49E] cursor-pointer active:scale-105 active:bg-[#02807b] '>LOGIN</button>
                 </div>
             </form>
-            <p className='mt-4 font-poppins font-normal text-base text-deepdark cursor-pointer' >NEW USER ? <Link href='/register' className=' text-[#01A49E]'>Register</Link></p>
+            <p className='mt-4 font-poppins font-normal text-center sm:text-left text-base text-deepdark cursor-pointer' >NEW USER ? <Link href='/register' className=' text-[#01A49E]'>Register</Link></p>
         </div>
     </div>
   )
