@@ -4,31 +4,59 @@ import { IoClose, IoTrashOutline } from "react-icons/io5";
 import Link from 'next/link';
 import axios from 'axios';
 
+
 const CartSidebar = ({ isOpen, setIsOpen }) => {
     const [product , setProduct] = useState(null)
     const cartList = product?.cartItem?.cartItem || []
+    const [userInfo, setUserInfo] = useState(null);
+    
+      useEffect(() => {
+        const loadUserInfo = () => {
+        const storeData = localStorage.getItem("userInfo");
+        if (storeData) {
+          try {
+            const storeDataObject = JSON.parse(storeData);
+            const user = storeDataObject?.userInfo?.userInfo || storeDataObject?.userInfo || storeDataObject;
+            setUserInfo(user);
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          setUserInfo(null);
+        }
+        };
+        loadUserInfo();
+        window.addEventListener("authChanged", loadUserInfo);
+    
+        return () => {
+          window.removeEventListener("authChanged", loadUserInfo);
+        };
+      }, []);
 
-    const fetchProduct =async()=>{
-        try{
-        const response = await axios.get(`http://localhost:8000/cart/get-cart`,{
-            params:{creatorId:'6909bab7ec77eeef7168a39b'}
-        })
-        setProduct(response.data);
-        }
-        catch(err){
-        console.log(err)
-        }
-    }  
-    // Re-fetch when filters change
     useEffect(() => {
-        fetchProduct();
-    }, []);
+    const fetchProduct = async () => {
+      const userId = userInfo?.userId || userInfo?._id || userInfo?.id ; // Use the user ID from userInfo
+      if (!userId) {
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/cart/get-cart?creatorId=${userId}`
+        );
+        setProduct(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    // Re-fetch when filters change
+    fetchProduct();
+  }, [userInfo]);
 
     const handeldelete = async (itemId) => {
     try {
         const deleteData = {
         data: {
-            creatorId: '6909bab7ec77eeef7168a39b',
+            creatorId: userInfo?.userId || userInfo?._id || userInfo?.id, // The ID of the user
             productId: itemId // The specific ID of the product to remove
         }
         };
@@ -36,12 +64,16 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
         await axios.delete(`http://localhost:8000/cart/delete-cart`, deleteData);
         
         // Refresh the list immediately after deleting
-        fetchProduct();
+        const response = await axios.get(
+        `http://localhost:8000/cart/get-cart?creatorId=${userInfo?.userId || userInfo?._id || userInfo?.id}`
+        );
+        setProduct(response.data);
     } catch (err) {
         console.error("Delete failed:", err);
     }
     };
 
+    console.log("product list", product);
 
   return (
     <>
@@ -77,8 +109,7 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
                   </div>
                   <div className="flex justify-between items-end">
                     <p className="text-[#01A49E] font-bold">৳{item.productId.discountPrice}</p>
-                    <button onClick={()=>handeldelete(item._id)} className="text-red-500 hover:text-red-700 text-lg">
-                      <IoTrashOutline />
+                    <button onClick={()=>handeldelete(item._id)} className="text-red-500 hover:text-red-700 hover:scale-110 transition-all  cursor-pointer text-lg">                      <IoTrashOutline />
                     </button>
                   </div>
                 </div>
@@ -101,7 +132,7 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
           <div className="grid grid-cols-1 gap-3">
             {/* View Cart Button */}
             <Link 
-              href="/cart" 
+              href="/cartpage" 
               onClick={() => setIsOpen(false)}
               className="w-full h-12 flex items-center justify-center border-2 border-[#01A49E] text-[#01A49E] font-bold rounded-lg hover:bg-[#01A49E]/5 transition"
             >

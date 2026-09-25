@@ -18,6 +18,30 @@ const page = () => {
     const [activeImg, setActiveImg] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [quantity, setQuantity] = useState(1);
+    const [userInfo, setUserInfo] = useState(null);
+        
+          useEffect(() => {
+            const loadUserInfo = () => {
+            const storeData = localStorage.getItem("userInfo");
+            if (storeData) {
+              try {
+                const storeDataObject = JSON.parse(storeData);
+                const user = storeDataObject?.userInfo?.userInfo || storeDataObject?.userInfo || storeDataObject;
+                setUserInfo(user);
+              } catch (err) {
+                console.log(err);
+              }
+            } else {
+              setUserInfo(null);
+            }
+            };
+            loadUserInfo();
+            window.addEventListener("authChanged", loadUserInfo);
+        
+            return () => {
+              window.removeEventListener("authChanged", loadUserInfo);
+            };
+          }, []);
 
     // Logic to handle increment/decrement
     const handleIncrement = () => {
@@ -54,7 +78,7 @@ const page = () => {
       console.log('click hossa')
       try{
         const cartData = {
-          creatorId:'6909bab7ec77eeef7168a39b',
+          creatorId: userInfo?.userId || userInfo?._id || userInfo?.id,
           cartItem:[{
             productId:product._id,
             varient:selectedSize,
