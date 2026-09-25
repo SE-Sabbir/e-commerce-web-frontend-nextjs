@@ -14,9 +14,9 @@ const Footer = () => {
             </div>
             <p className='font-poppins font-normal text-sm'>By subscribing, you accept the Privacy Policy</p>
             <div className=' mt-7 flex flex-col gap-2 font-normal text-sm text-deepdark'>
-                <p><strong>Hotline 24/7:</strong> (+325) 3686 25 16</p>
+                <p><strong>Hotline 24/7:</strong> (+880) 1311961850</p>
                 <p><strong>Work Hours:</strong> Monday-Saturday: 9.00am - 5.00pm</p>
-                <p><strong>Mail:</strong> contact@swatbabymall.com</p>
+                <p><strong>Mail:</strong> e-commarce@exmaple.com</p>
             </div>
         </div>
         <div className='w-full sm:ml-5 flex flex-wrap justify-between gap-3'>
@@ -55,7 +55,7 @@ const Footer = () => {
             <Image width={30} height={10} src='/pay2.png' alt='payicon' className='w-auto h-auto aspect-auto' />
             <Image width={40} height={10} src='/pay3.png' alt='payicon' className='w-auto h-auto aspect-auto' />
         </div>
-        <div className='py-7 flex items-center justify-center gap-2 border-t-2 border-[#f3eded]'>
+        <div className=' py-7 flex items-center justify-center gap-2 border-t-2 border-[#f3eded]'>
             <LuCopyright/>
             <p>2026 <strong>E-Commerce</strong>. All Rights Reserved</p>
         </div>

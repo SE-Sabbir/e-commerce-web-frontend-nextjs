@@ -8,6 +8,7 @@ import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import { useParams } from 'next/navigation';
 import ProductDetailsSkeleton from '@/app/components/skeliton/ProductDetailsSkeleton';
+import Link from 'next/link';
 
 
 
@@ -75,7 +76,6 @@ const page = () => {
 
     
     const handelsubmit =async(e)=>{
-      console.log('click hossa')
       try{
         const cartData = {
           creatorId: userInfo?.userId || userInfo?._id || userInfo?.id,
@@ -86,7 +86,6 @@ const page = () => {
           }]
         }
         const response = await axios.post(`http://localhost:8000/cart/add-to-cart`,cartData)
-        console.log("Added to db" ,response.data)
       }catch(err){
         console.log(err)
       }
@@ -203,7 +202,7 @@ const page = () => {
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 pt-4">
             <div className="flex gap-3">
-              <button onClick={handelsubmit} className="flex-2 text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 bg-[#01A49E] active:bg-[#028d88] transition-all active:scale-[0.98]">
+              <button onClick={handelsubmit} className="flex-2 text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 bg-[#01A49E] cursor-pointer active:bg-[#028d88] transition-all active:scale-[0.98]">
                 <HiShoppingCart size={20} />
                 ADD TO CART
               </button>
@@ -211,11 +210,11 @@ const page = () => {
                 <FaRegHeart size={20} className="text-gray-600" />
               </button>
             </div>
-            
-            <button className="w-full bg-black text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-900 transition-all">
+
+            <Link href="/orderpage" className="w-full bg-black text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-900 transition-all">
               <GoZap size={20} fill="currentColor" />
               ORDER NOW
-            </button>
+            </Link>
           </div>
 
           {/* Short Delivery Note */}

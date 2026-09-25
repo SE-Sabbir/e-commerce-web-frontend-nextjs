@@ -73,8 +73,6 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
     }
     };
 
-    console.log("product list", product);
-
   return (
     <>
       {/* Background Overlay */}
@@ -132,7 +130,7 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
           <div className="grid grid-cols-1 gap-3">
             {/* View Cart Button */}
             <Link 
-              href="/cartpage" 
+              href="/shoppingcart" 
               onClick={() => setIsOpen(false)}
               className="w-full h-12 flex items-center justify-center border-2 border-[#01A49E] text-[#01A49E] font-bold rounded-lg hover:bg-[#01A49E]/5 transition"
             >
@@ -141,7 +139,7 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
 
             {/* Checkout / Order Button */}
             <Link 
-              href="/checkout" 
+              href="/orderpage"
               onClick={() => setIsOpen(false)}
               className="w-full h-12 flex items-center justify-center bg-[#01A49E] text-white font-bold rounded-lg hover:bg-[#01938d] shadow-lg shadow-[#01A49E]/20 transition"
             >
