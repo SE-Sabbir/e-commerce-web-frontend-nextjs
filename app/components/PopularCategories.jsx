@@ -15,7 +15,7 @@ const PopularCategories = () => {
         
     const fetchProductCategory =async()=>{
         try{
-        const responsecategory = await axios.get("http://localhost:8000/category/all-category")
+        const responsecategory = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/all-category`)
         setProductCategory(responsecategory.data);
     }
     catch(err){
@@ -27,7 +27,7 @@ const PopularCategories = () => {
     const fetchProduct = async()=>{
         try{
         const limit = 2;
-        const response = await axios.get("http://localhost:8000/product/public-product",{params: {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/public-product`,{params: {
               filterProduct: "All",
               limit
             }})

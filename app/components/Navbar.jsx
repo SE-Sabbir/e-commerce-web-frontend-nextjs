@@ -9,6 +9,7 @@ import Link from "next/link";
 import CartSidebar from "./CartSidebar";
 import axios from "axios";
 import Image from "next/image";
+import { showToast } from "./ToastProvider";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,6 +49,7 @@ const Navbar = () => {
   
   const handelLogout = () => {
     localStorage.clear();
+    showToast("You have been logged out.");
     setUserInfo(null);
     setIsMenuOpen(false);
     window.dispatchEvent(new Event("authChanged"));
@@ -57,19 +59,21 @@ const Navbar = () => {
     const fetchProduct = async () => {
       const userId = userInfo?.userId || userInfo?._id || userInfo?.id ; // Use the user ID from userInfo
       if (!userId) {
+        setProduct(null);
         return;
       }
       try {
         const response = await axios.get(
-          `http://localhost:8000/cart/get-cart?creatorId=${userId}`
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/get-cart?creatorId=${userId}`
         );
         setProduct(response.data);
       } catch (err) {
         console.log(err);
       }
     };
-    // Re-fetch when filters change
     fetchProduct();
+    window.addEventListener("cartUpdated", fetchProduct);
+    return () => window.removeEventListener("cartUpdated", fetchProduct);
   }, [userInfo]);
   const handelSearchClear = () => {
     setShowSearchBtn(false);
@@ -85,7 +89,7 @@ const Navbar = () => {
     try {
       const limit = 500;
       const response = await axios.get(
-        "http://localhost:8000/product/public-product",
+        `${process.env.NEXT_PUBLIC_API_URL}/product/public-product`,
         {
           params: {
             filterProduct: "All",

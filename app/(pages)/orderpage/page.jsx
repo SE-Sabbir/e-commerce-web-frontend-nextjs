@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 import { FiArrowLeft, FiLoader, FiLock, FiMail, FiMapPin, FiPhone, FiShoppingBag, FiTag } from "react-icons/fi";
 import Footer from "@/app/components/Footer";
 import OurService from "@/app/components/OurService";
+import { showToast } from "@/app/components/ToastProvider";
 
-const checkoutUrl = "http://localhost:8000/order/checkout";
+const checkoutUrl = `${process.env.NEXT_PUBLIC_API_URL}/order/checkout`;
 const initialForm = {
   customerName: "",
   customerPhone: "",
@@ -59,7 +60,7 @@ const page = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:8000/cart/get-cart", {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cart/get-cart`, {
           params: { creatorId: userId },
         });
         setCart(response.data || null);
@@ -106,9 +107,12 @@ const page = () => {
         customerEmail: form.customerEmail,
         customerPhone: form.customerPhone,
       }));
+      showToast("Delivery details saved. Continue to payment.");
       router.push("/payment");
     } catch (err) {
-      setError(err.response?.data || "Your order could not be placed. Please check your details and try again.");
+      const message = err.response?.data?.message || "Your order could not be placed. Please check your details and try again.";
+      setError(message);
+      showToast(message, "error");
     } finally {
       setSubmitting(false);
     }

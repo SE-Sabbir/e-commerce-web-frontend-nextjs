@@ -1,6 +1,7 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import ToastProvider from "./components/ToastProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         cz-shortcut-listen="true"
         >
         <Navbar/>
+        <ToastProvider />
         {children}
       </body>
     </html>

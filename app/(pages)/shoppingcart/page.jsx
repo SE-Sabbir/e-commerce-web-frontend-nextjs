@@ -7,6 +7,7 @@ import { FiArrowRight, FiCheck, FiMinus, FiPlus, FiShoppingBag, FiTag, FiTrash2 
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import OurService from "@/app/components/OurService";
 import Footer from "@/app/components/Footer";
+import { showToast } from "@/app/components/ToastProvider";
 
 const CartPage = () => {
   const [items, setItems] = useState([]);
@@ -50,7 +51,7 @@ const CartPage = () => {
       return;
     }
     try {
-      const response = await axios.get("http://localhost:8000/cart/get-cart", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cart/get-cart`, {
         params: { creatorId: userId },
       });
       const cartData = response.data || {};
@@ -66,13 +67,16 @@ const CartPage = () => {
 
   useEffect(() => {
     fetchCart();
+    const refreshCart = () => fetchCart();
+    window.addEventListener("cartUpdated", refreshCart);
+    return () => window.removeEventListener("cartUpdated", refreshCart);
   }, [userInfo]);
 
   const increaseQuantity = async (item) => {
     const creatorId = userInfo?.userId || userInfo?._id || userInfo?.id;
     setUpdatingId(item._id);
     try {
-      await axios.post("http://localhost:8000/cart/add-to-cart", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cart/add-to-cart`, {
         creatorId,
         cartItem: [{
           productId: item.productId?._id || item.productId,
@@ -81,8 +85,10 @@ const CartPage = () => {
         }],
       });
       await fetchCart();
+      showToast("Cart quantity updated.");
     } catch (error) {
       console.error("Unable to update cart quantity", error);
+      showToast("Could not update the cart quantity.", "error");
     } finally {
       setUpdatingId("");
     }
@@ -92,7 +98,7 @@ const CartPage = () => {
     const creatorId = userInfo?.userId || userInfo?._id || userInfo?.id;
     setUpdatingId(item._id);
     try {
-      await axios.post("http://localhost:8000/cart/add-to-cart", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cart/add-to-cart`, {
         creatorId,
         cartItem: [{
           productId: item.productId?._id || item.productId,
@@ -102,8 +108,10 @@ const CartPage = () => {
         action: "decrease",
       });
       await fetchCart();
+      showToast("Cart quantity updated.");
     } catch (error) {
       console.error("Unable to decrease cart quantity", error);
+      showToast("Could not update the cart quantity.", "error");
     } finally {
       setUpdatingId("");
     }
@@ -113,12 +121,14 @@ const CartPage = () => {
     const creatorId = userInfo?.userId || userInfo?._id || userInfo?.id;
     setRemovingId(itemId);
     try {
-      await axios.delete("http://localhost:8000/cart/delete-cart", {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cart/delete-cart`, {
         data: { creatorId, productId: itemId },
       });
-      await fetchCart();
+      window.dispatchEvent(new Event("cartUpdated"));
+      showToast("Item removed from your cart.");
     } catch (error) {
       console.error("Unable to remove cart item", error);
+      showToast("Could not remove this item.", "error");
     } finally {
       setRemovingId("");
     }

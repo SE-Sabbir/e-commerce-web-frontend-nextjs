@@ -41,15 +41,16 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
       }
       try {
         const response = await axios.get(
-          `http://localhost:8000/cart/get-cart?creatorId=${userId}`
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/get-cart?creatorId=${userId}`
         );
         setProduct(response.data);
       } catch (err) {
         console.log(err);
       }
     };
-    // Re-fetch when filters change
     fetchProduct();
+    window.addEventListener("cartUpdated", fetchProduct);
+    return () => window.removeEventListener("cartUpdated", fetchProduct);
   }, [userInfo]);
 
     const handeldelete = async (itemId) => {
@@ -61,13 +62,9 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
         }
         };
         
-        await axios.delete(`http://localhost:8000/cart/delete-cart`, deleteData);
+        await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/cart/delete-cart`, deleteData);
         
-        // Refresh the list immediately after deleting
-        const response = await axios.get(
-        `http://localhost:8000/cart/get-cart?creatorId=${userInfo?.userId || userInfo?._id || userInfo?.id}`
-        );
-        setProduct(response.data);
+        window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
         console.error("Delete failed:", err);
     }

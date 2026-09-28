@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa6";
 import { useParams } from 'next/navigation';
 import ProductDetailsSkeleton from '@/app/components/skeliton/ProductDetailsSkeleton';
 import Link from 'next/link';
+import { showToast } from "@/app/components/ToastProvider";
 
 
 
@@ -60,7 +61,7 @@ const page = () => {
     useEffect(() => {
         const fetchProduct = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/product/single-product/${slug}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/single-product/${slug}`);
             const data = response.data;
             setProduct(data);
             // Start with the thumbnail as the main image
@@ -76,18 +77,27 @@ const page = () => {
 
     
     const handelsubmit =async(e)=>{
+      const creatorId = userInfo?.userId || userInfo?._id || userInfo?.id;
+      if (!creatorId) {
+        showToast("Please sign in before adding items to your cart.", "error");
+        return;
+      }
+
       try{
         const cartData = {
-          creatorId: userInfo?.userId || userInfo?._id || userInfo?.id,
+          creatorId,
           cartItem:[{
             productId:product._id,
             varient:selectedSize,
             qty:quantity
           }]
         }
-        const response = await axios.post(`http://localhost:8000/cart/add-to-cart`,cartData)
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/cart/add-to-cart`,cartData)
+        window.dispatchEvent(new Event("cartUpdated"));
+        showToast("Product added to your cart.");
       }catch(err){
         console.log(err)
+        showToast("Please Select a size", "error");
       }
     }
 
@@ -210,11 +220,6 @@ const page = () => {
                 <FaRegHeart size={20} className="text-gray-600" />
               </button>
             </div>
-
-            <Link href="/orderpage" className="w-full bg-black text-white h-14 rounded-lg font-bold flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-900 transition-all">
-              <GoZap size={20} fill="currentColor" />
-              ORDER NOW
-            </Link>
           </div>
 
           {/* Short Delivery Note */}

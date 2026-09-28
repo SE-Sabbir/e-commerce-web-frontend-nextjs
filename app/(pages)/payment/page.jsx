@@ -5,13 +5,13 @@ import Link from "next/link";
 import { FiArrowLeft, FiCheckCircle, FiLock, FiPhone, FiShield, FiShoppingBag } from "react-icons/fi";
 import Footer from "@/app/components/Footer";
 import OurService from "@/app/components/OurService";
-import axios from "axios";
+import { showToast } from "@/app/components/ToastProvider";
 
 const paymentMethods = [
-  { id: "bkash", name: "bKash", color: "#e2136e", description: "Send money with bKash" },
-  { id: "nagad", name: "Nagad", color: "#f58220", description: "Pay using Nagad" },
-  { id: "rocket", name: "Rocket", color: "#713d96", description: "Send money with Rocket" },
-  { id: "cod", name: "Cash on delivery", color: "#01A49E", description: "Pay when your order arrives" },
+  { id: "bkash", name: "bKash", color: "#e2136e", description: "Send money with bKash" ,imgurl:"https://res.cloudinary.com/dxr5inpsy/image/upload/v1790583531/bkash_logo_ekpbvm.png" },
+  { id: "nagad", name: "Nagad", color: "#f58220", description: "Pay using Nagad" ,imgurl:"https://res.cloudinary.com/dxr5inpsy/image/upload/v1790583531/nogod_logo_ryh0yj.png" },
+  { id: "rocket", name: "Rocket", color: "#713d96", description: "Send money with Rocket" ,imgurl:"https://res.cloudinary.com/dxr5inpsy/image/upload/v1790584805/rocket_logo_lsobuw.png" },
+  { id: "cod", name: "Cash on delivery", color: "#01A49E", description: "Pay when your order arrives", imgurl:"https://res.cloudinary.com/dxr5inpsy/image/upload/v1790584710/cash-delivery-concept-vector-illustration_620585-2106_p37fi3.avif" },
 ];
 
 const page = () => {
@@ -21,61 +21,22 @@ const page = () => {
   const [transactionId, setTransactionId] = useState("");
   const [error, setError] = useState("");
   const [confirmed, setConfirmed] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-
-   useEffect(() => {
-      const loadUserInfo = () => {
-        const storedData = localStorage.getItem("userInfo");
-        if (!storedData) {
-          setUserInfo(null);
-          return;
-        }
-        try {
-          const storedObject = JSON.parse(storedData);
-          setUserInfo(storedObject?.userInfo?.userInfo || storedObject?.userInfo || storedObject);
-        } catch (err) {
-          console.log(err);
-          setUserInfo(null);
-        }
-      };
-  
-      loadUserInfo();
-      window.addEventListener("authChanged", loadUserInfo);
-      return () => window.removeEventListener("authChanged", loadUserInfo);
-    }, []);
-  
-    useEffect(() => {
-      const fetchCart = async () => {
-        const userId = userInfo?.userId || userInfo?._id || userInfo?.id;
-        if (!userId) {
-          setOrder(null);
-          setLoading(false);
-          return;
-        }
-  
-        try {
-          const response = await axios.get(`http://localhost:8000/order/checkout?creatorId=${userId}`);
-          setOrder(response.data || null);
-        } catch (err) {
-          console.log(err);
-          setError("We could not load your cart. Please try again.");
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchCart();
-    }, [userInfo]);
 
   useEffect(() => {
     const pendingOrder = sessionStorage.getItem("pendingOrder");
-    if (!pendingOrder) return;
+    if (!pendingOrder) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setOrder(JSON.parse(pendingOrder));
     } catch (err) {
       console.log(err);
       sessionStorage.removeItem("pendingOrder");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -91,12 +52,15 @@ const page = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (method !== "cod" && (!accountNumber.trim() || !transactionId.trim())) {
-      setError("Enter the mobile number and transaction ID used for this payment.");
+      const message = "Enter the mobile number and transaction ID used for this payment.";
+      setError(message);
+      showToast(message, "error");
       return;
     }
 
     setError("");
     setConfirmed(true);
+    showToast("Your order has been confirmed.");
     sessionStorage.removeItem("pendingOrder");
   };
 
@@ -157,7 +121,7 @@ const page = () => {
               <div className="grid gap-3 sm:grid-cols-2">
                 {paymentMethods.map((paymentMethod) => (
                   <button type="button" key={paymentMethod.id} onClick={() => handleMethodChange(paymentMethod.id)} className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition ${method === paymentMethod.id ? "border-[#01A49E] bg-[#f1fbfa]" : "border-[#eeeeee] hover:border-[#b9dcd9]"}`}>
-                    <span className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-bold text-white" style={{ backgroundColor: paymentMethod.color }}>{paymentMethod.id === "cod" ? "COD" : paymentMethod.name.slice(0, 1)}</span>
+                    {paymentMethod.imgurl ? <img src={paymentMethod.imgurl} alt="" className="h-11 w-11 rounded-lg object-contain" /> : <span className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-bold text-white" style={{ backgroundColor: paymentMethod.color }}>COD</span>}
                     <span><strong className="block text-sm text-[#212529]">{paymentMethod.name}</strong><span className="mt-1 block text-xs text-[#777777]">{paymentMethod.description}</span></span>
                   </button>
                 ))}

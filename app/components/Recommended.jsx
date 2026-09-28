@@ -13,7 +13,7 @@ const Recommended = () => {
 
   const fetchProduct =async()=>{
       try{
-      const response = await axios.get("http://localhost:8000/product/public-product" ,{params: {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/public-product` ,{params: {
           filterProduct: "All",
           limit,
         }})

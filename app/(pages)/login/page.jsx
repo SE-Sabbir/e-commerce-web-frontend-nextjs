@@ -6,6 +6,7 @@ import { IoEyeOffOutline } from "react-icons/io5";
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { showToast } from "@/app/components/ToastProvider";
 
 
 
@@ -24,7 +25,7 @@ const page = () => {
     const handelSubmit =async(e)=>{
         e.preventDefault()
         try{
-            const response = await axios.post("http://localhost:8000/auth/login", formData)
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, formData)
             setUserData(response.data)
             const authToken = response.data?.accessToken;
 
@@ -33,18 +34,20 @@ const page = () => {
                 localStorage.setItem("userInfo" ,JSON.stringify(response.data))
                 window.dispatchEvent(new Event("authChanged")); // Notify other tabs about the change
             }
+            showToast("You are signed in.");
             navigate.push("/")
         }
         catch(err){
             console.log(err)
-            const errorMessage = err.response?.data?.message;
+            const errorMessage = err.response?.data?.message || "Unable to sign in. Check your details and try again.";
             setErrorMessage(errorMessage)
+            showToast(errorMessage, "error");
         }
     }
 
   return (
-    <div className='w-full max-w-7xl mx-auto mt-10 sm:mt-40 grid grid-cols-1 sm:grid-cols-2 gap-10 items-center justify-center px-2 sm:px-0'>
-        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto  mx-auto '/>
+    <div className='w-full max-w-7xl mx-auto mt-10 sm:mt-30 grid grid-cols-1 sm:grid-cols-2 gap-10 items-center justify-center px-2 sm:px-0'>
+        <Image width={400} height={400} src='/group3653.png' alt='auth icon' className='w-auto h-auto mx-auto '/>
         <div>
             <h2 className=' pt-5 font-poppins font-semibold text-center sm:text-left text-3xl text-[#01A49E] '>Welcome Back</h2>
             <h3 className=' pt-2 font-poppins font-normal text-center sm:text-left text-sm text-red-500 uppercase '>{errorMessage}</h3>
@@ -88,7 +91,7 @@ const page = () => {
                     <button type='submit' className='px-10 py-4 font-poppins font-normal text-base text-white rounded-md bg-[#01A49E] cursor-pointer active:scale-105 active:bg-[#02807b] '>LOGIN</button>
                 </div>
             </form>
-            <p className='mt-4 font-poppins font-normal text-center sm:text-left text-base text-deepdark cursor-pointer' >NEW USER ? <Link href='/register' className=' text-[#01A49E]'>Register</Link></p>
+            <p className='my-4 font-poppins font-normal text-center sm:text-left text-base text-deepdark cursor-pointer' >NEW USER ? <Link href='/register' className=' text-[#01A49E]'>Register</Link></p>
         </div>
     </div>
   )
