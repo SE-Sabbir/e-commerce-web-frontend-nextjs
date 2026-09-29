@@ -3,12 +3,11 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { HiShoppingCart } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa6";
-import { GoZap } from "react-icons/go";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
+import { useSearchParams } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import ProductDetailsSkeleton from '@/app/components/skeliton/ProductDetailsSkeleton';
-import Link from 'next/link';
 import { showToast } from "@/app/components/ToastProvider";
 
 
@@ -21,6 +20,7 @@ const page = () => {
     const [selectedSize, setSelectedSize] = useState("");
     const [quantity, setQuantity] = useState(1);
     const [userInfo, setUserInfo] = useState(null);
+    const searchParams = useSearchParams();
         
           useEffect(() => {
             const loadUserInfo = () => {

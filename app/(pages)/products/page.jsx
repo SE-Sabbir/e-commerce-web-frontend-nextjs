@@ -6,13 +6,13 @@ import OurService from "@/app/components/OurService";
 import ProductCardSkeleton from "@/app/components/skeliton/ProductCardSkeleton";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
 
 
 
-const page = () => {
+const ProductsPageContent = () => {
 
     // Filter States
     const categories = [
@@ -217,4 +217,18 @@ const page = () => {
   );
 };
 
-export default page
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-7xl mx-auto px-2 py-8 grid grid-cols-2 sm:grid-cols-4">
+          {Array.from({ length: 10 }, (_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      }
+    >
+      <ProductsPageContent />
+    </Suspense>
+  );
+}
