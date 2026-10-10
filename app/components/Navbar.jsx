@@ -119,13 +119,15 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 lg:px-0 h-20 flex items-center justify-between gap-4 ">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0 ">
+        <div className="w-12 h-12 bg-white rounded-full overflow-hidden shadow-md cursor-pointer hover:shadow-xl transition">
           <img
-            className="w-10 h-10 md:w-10 md:h-10 rounded-full shadow-md cursor-pointer hover:shadow-xl transition"
-            src={"favicon.ico"}
+            className="w-full h-full p-1 object-cover "
+            src={"/nijershop-logo-w.jpg"}
             alt="logo"
           />
-          <h4 className="font-poppins font-bold text-white text-md md:text-base ">
-            MERN-ECOMMERCE
+        </div>
+          <h4 className="font-poppins font-bold text-white text-lg md:text-xl cursor-pointer hover:text-black transition">
+            NijerShop
           </h4>
         </Link>
 
